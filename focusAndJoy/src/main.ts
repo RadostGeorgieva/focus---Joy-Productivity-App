@@ -1,6 +1,20 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { importProvidersFrom } from '@angular/core';
 import { AppComponent } from './app/app.component';
+import { environment } from './environments/environment'; // Your Firebase config
+import { AngularFireModule } from '@angular/fire/compat'; // Use compat for Firebase services
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore'; // Firestore service
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+
+
+console.log(environment.firebase);  // Make sure it's available
+
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      AngularFireModule.initializeApp(environment.firebase),  // Initialize Firebase
+      AngularFirestoreModule                                    // Import Firestore
+    ),
+  ],
+});
