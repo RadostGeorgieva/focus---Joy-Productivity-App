@@ -1,26 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
-import {AngularFireModule} from '@angular/fire/compat'
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { environment } from '../environments/environment.development';
-import { Observable } from 'rxjs';
-
-
+import { FirestoreCheckService } from './services/firestore-check.service';
+import { FirebaseService } from './services/firebase.service';
+import { DocumentData } from 'firebase/firestore';
+import { CommonModule } from '@angular/common';
+import { ToDoComponent } from './to-do/to-do.component';
+import { ToDoItem, ToDoList } from './models/to-do.model';
+import { ToDoService } from './services/to-do.service';  // Import your ToDoItem model
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,HomePageComponent],
+  imports: [RouterOutlet, HomePageComponent, ToDoComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'focusAndJoy';
-  items$: Observable<any[]>;
+  data: ToDoList[] = [];
+  toDoLists: ToDoList[] = []; // Type the data as ToDoItem[] to match the fetched data
 
-  constructor(private firestore: AngularFirestore) {
-    // Fetch data from Firestore collection
-    this.items$ = firestore.collection('items').valueChanges();
+  constructor(
+    private firestoreCheckService: FirestoreCheckService,
+    private firebaseService: FirebaseService,
+    private toDoService: ToDoService
+  ) {}
+
+  ngOnInit(): void {
+    this.firebaseService.listenToCollection('to-do-lists').subscribe((data) => {
+      this.toDoLists = data;
+    });
   }
 }

@@ -5,11 +5,6 @@ import { environment } from './environments/environment'; // Your Firebase confi
 import { AngularFireModule } from '@angular/fire/compat'; // Use compat for Firebase services
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'; // Firestore service
 
-
-
-console.log(environment.firebase);  // Make sure it's available
-
-
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
