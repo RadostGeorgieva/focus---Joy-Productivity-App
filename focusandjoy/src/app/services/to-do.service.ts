@@ -33,13 +33,17 @@ export class ToDoService {
     return this.firebaseService.addDocument(this.collectionName, toDoList);
   }
     // Update existing to-do list
-    updateToDoList(id: string, toDoItem: ToDoItem) {
-      return this.firebaseService.updateDocument(this.collectionName, id, toDoItem);
+    updateToDoList(id: string, toDoItem: string, index:number) {
+      return this.firebaseService.updateDocument(this.collectionName, id, index, toDoItem);
     }
   
-    // Delete to-do list
+    // Delete  ENTIRE to-do list
     deleteToDoList(id: string) {
       return this.firebaseService.deleteDocument(this.collectionName, id);
+    }
+
+    deleteToDoItem(docId: string, itemIndex: number): Promise<void> {
+      return this.firebaseService.deleteToDoItem(this.collectionName, docId, itemIndex);
     }
   }
 

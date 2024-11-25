@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { arrayUnion, getFirestore, collection, onSnapshot, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { arrayUnion, getFirestore, collection, onSnapshot, getDocs,getDoc, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { environment } from '../../environments/environment';
 import { ToDoItem, ToDoList } from '../models/to-do.model';
 import { Observable, from, BehaviorSubject } from 'rxjs'; 
@@ -64,17 +64,29 @@ export class FirebaseService {
   }
 
   // Updating an existing document in the collection by docId
-  async updateDocument(collectionName: string, docId: string, data: ToDoItem) {
+  async updateDocument(collectionName: string, docId: string, index:number, updatedItem: string) {
     try {
       const documentRef = doc(this.db, collectionName, docId);
-      await updateDoc(documentRef, {text:data.text});
+
+      const currentDoc = await getDoc(documentRef);
+
+      if(!currentDoc.exists()) {
+        console.error("Document does not exist!");
+        return
+      }
+        const currentData = currentDoc.data();
+        const items = currentData['items'] || [];
+        items[index] = updatedItem;
+      await updateDoc(documentRef, {
+        items: items ,
+      });
       console.log('Document updated successfully');
     } catch (error) {
       console.error('Error updating document:', error);
     }
   }
 
-
+//delete entire LIST!
 async deleteDocument(collectionName: string, docId: string) {
   try {
     const documentRef = doc(this.db, collectionName, docId);
@@ -82,6 +94,39 @@ async deleteDocument(collectionName: string, docId: string) {
     console.log('Document deleted successfully');
   } catch (error) {
     console.error('Error deleting document:', error);
+  }
+}
+
+//delete item only
+async deleteToDoItem(collectionName: string, docId: string, itemIndex: number): Promise<void> {
+  try {
+    const documentRef = doc(this.db, collectionName, docId);
+
+    // Get the current document data
+    const currentDoc = await getDoc(documentRef);
+
+    if (!currentDoc.exists()) {
+      console.error('Document does not exist!');
+      return;
+    }
+
+    // Extract current items
+    const currentData = currentDoc.data();
+    const items = currentData['items'] || [];
+
+    if (itemIndex < 0 || itemIndex >= items.length) {
+      console.error('Invalid item index');
+      return;
+    }
+
+    // Remove the item at the specified index
+    items.splice(itemIndex, 1);
+
+    // Update Firestore with the modified items array
+    await updateDoc(documentRef, { items });
+    console.log(`Item at index ${itemIndex} deleted successfully`);
+  } catch (error) {
+    console.error('Error deleting item:', error);
   }
 }
 }
