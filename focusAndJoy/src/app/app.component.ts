@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { FirestoreCheckService } from './services/firestore-check.service';
 import { FirebaseService } from './services/firebase.service';
@@ -12,7 +12,7 @@ import { ToDoService } from './services/to-do.service';  // Import your ToDoItem
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomePageComponent, ToDoComponent],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

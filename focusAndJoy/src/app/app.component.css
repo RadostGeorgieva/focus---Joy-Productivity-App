@@ -1,0 +1,21 @@
+nav ul {
+    
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap:20px;
+    padding: 0 40px;
+}
+
+nav li, .trackers-list li{
+    
+    list-style: none;
+}
+
+nav li a{
+   padding: 5px;
+   color: #007BFF;
+}
+nav li a:hover{
+    border-bottom: 1px solid #B7E0B8;
+ }
