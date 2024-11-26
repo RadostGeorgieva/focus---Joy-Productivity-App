@@ -1,4 +1,4 @@
-nav ul {
+nav ul, .footer {
     
     display: flex;
     flex-wrap: wrap;
@@ -12,10 +12,13 @@ nav li, .trackers-list li{
     list-style: none;
 }
 
-nav li a{
+nav li a, .footer{
    padding: 5px;
    color: #007BFF;
 }
-nav li a:hover{
+nav li a:hover, .footer p:hover{
     border-bottom: 1px solid #B7E0B8;
  }
+
+
+ 
