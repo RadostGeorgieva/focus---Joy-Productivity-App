@@ -17,7 +17,7 @@ body {
     font-size: 1.2rem;
     padding: 10px;
     font-style: normal;
-    background-color: #FFF9E6;
+    background-color: #1F1B16; /* Dark Background */
 }
 
 header {
@@ -37,4 +37,14 @@ header {
 .logo #joy{
     font-size: 1.5rem;
     color: #B7E0B8;
+}
+
+/* Footer */
+footer {
+    margin-top: 60px;
+    text-align: center;
+    color: #8C744B;
+    font-size: 0.9rem;
+    padding: 10px 0;
+    border-top: 1px solid #AA9166;
 }

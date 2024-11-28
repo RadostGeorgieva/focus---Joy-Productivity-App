@@ -1,22 +1,35 @@
+/* General To-Do Container Styles */
+h1 {
+  font-family: 'Playfair Display', serif;
+  color: #D9C2A9; /* Parchment */
+  font-size: 1.8rem;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
 .to-do {
-  border: 1px solid #B7E0B8;
-  border-radius: 10px;
-  margin: 20px auto;
+  border: 2px solid #AA9166; /* Gold Border for elegance */
+  border-radius: 15px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #2E2A25; /* Dark academia background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
-
+  align-items: flex-start;
 }
 
+/* Collection Styles */
 .collection {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  flex: 33%;
-  border-right: 1px dotted #B7E0B8;
+  flex: 1;
+  padding: 10px;
+  border-right: 1px solid #AA9166; /* Gold accent divider */
   text-align: left;
-  gap: 10px;
+  gap: 15px;
 }
 
 .collection:last-child {
@@ -24,80 +37,99 @@
 }
 
 .collection-title {
-  margin: 10px;
+  font-family: 'Playfair Display', serif;
+  color: #D9C2A9; /* Parchment */
+  font-size: 1.8rem;
   text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
+/* Add Item Section */
 .add-item {
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin: 10px;
-}
-.edit-delete-icons {
-  display: flex;
-  gap: 10px;
+  margin: 20px;
 }
 
-.fa-pencil,
-.fa-trash-can {
-  color: #B7E0B8;
+.add-item input {
+  font-family: 'Lora', serif;
+  padding: 10px;
+  border: 1px solid #AA9166; /* Subtle gold input border */
+  border-radius: 5px;
+  background-color: #1F1B16;
+  color: #D9C2A9;
+}
+
+.add-item button {
+  font-family: 'Playfair Display', serif;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #AA9166; /* Gold button */
+  color: #1F1B16; /* Dark text */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-item button:hover {
+  background-color: #8C744B; 
+}
+
+.edit-delete-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.edit-delete-icons .fa-pencil,
+.edit-delete-icons .fa-trash-can {
+  color: #AA9166; 
   font-size: 20px;
   cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+
+}
+
+.edit-delete-icons .fa-pencil:hover,
+.edit-delete-icons .fa-trash-can:hover {
+  color: #8C744B; /* Deeper gold */
+  transform: scale(1.1);
 }
 
 .fa-circle-plus {
-  color: #B7E0B8;
+  color: #AA9166;
   font-size: 40px;
   cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
-.fa-circle-plus:hover, .fa-pencil:hover {
-  background-color: #FFF9E6;
-  color: #007BFF;
-  animation: shaking 0.3s linear 2;
+
+.fa-circle-plus:hover {
+  transform: scale(1.2);
+  color: #8C744B;
 }
-@keyframes shaking {
-  0%, 50%, 100% {
-      transform: rotate(0deg);
-  }
-  20% {
-      transform: rotate(-5deg);
-  }
-  70% {
-      transform: rotate(5deg);
-  }
-}
-.fa-trash-can:hover {
-  background-color: #FFF9E6;
-  color: red;
-  animation: shaking 0.3s linear 2;
-}
-@keyframes shaking {
-  0%, 50%, 100% {
-      transform: rotate(0deg);
-  }
-  20% {
-      transform: rotate(-5deg);
-  }
-  70% {
-      transform: rotate(5deg);
-  }
-}
+
 
 li {
-  padding: 10px;
   display: flex;
-  gap: 10px;
+  list-style: none;
   justify-content: space-between;
+  padding: 15px;
+  margin: 5px 0;
+  background-color: #1F1B16;
+  color: #D9C2A9;
+  border: 1px solid #AA9166;
+  border-radius: 10px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.item {
-  display: flex;
-  padding-left: 10px;
-  font-size: 1.5rem;
+li:hover {
+  transform: scale(1.02);
+  background-color: #2E2A25;
 }
 
-/* From Uiverse.io by boryanakrasteva */
+/* From Uiverse.io by boryanakrasteva */ 
 /* Customize the label (the checkbox-btn) */
 .checkbox-btn {
   display: block;
@@ -109,6 +141,7 @@ li {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
 }
 
 /* Hide the browser's default checkbox */
@@ -124,19 +157,17 @@ li {
   cursor: pointer;
   font-size: 14px;
 }
-
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
   top: 0;
-  left: 0px;
-  height: 25px;
-  width: 25px;
-  border: 2.5px solid black;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2.5px solid #AA9166; 
   transition: .2s linear;
 }
-
-.checkbox-btn input:checked~.checkmark {
+.checkbox-btn input:checked ~ .checkmark {
   background-color: transparent;
 }
 
@@ -150,34 +181,34 @@ li {
   top: 40%;
   width: 10px;
   height: 14px;
-  border: 2px solid #B7E0B8;
-  filter: drop-shadow(0px 0px 10px #B7E0B8);
+  border: 2px solid #0ea021;
+  filter: drop-shadow(0px 0px 10px #0ea021);
   border-width: 0 2.5px 2.5px 0;
   transition: .2s linear;
   transform: translate(-50%, -50%) rotate(-90deg) scale(0.2);
 }
 
 /* Show the checkmark when checked */
-.checkbox-btn input:checked~.checkmark:after {
+.checkbox-btn input:checked ~ .checkmark:after {
   visibility: visible;
   opacity: 1;
   transform: translate(-50%, -50%) rotate(0deg) scale(1);
   animation: pulse 1s ease-in;
 }
 
-.checkbox-btn input:checked~.checkmark {
+.checkbox-btn input:checked ~ .checkmark {
   transform: rotate(45deg);
   border: none;
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
-
   50% {
     transform: translate(-50%, -50%) rotate(0deg) scale(1.6);
   }
 }
+
+
