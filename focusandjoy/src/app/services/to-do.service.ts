@@ -9,26 +9,27 @@ import { FirebaseService } from './firebase.service';
 })
 export class ToDoService {
   private collectionName = 'to-do-lists';
-  private toDoListSubject = new BehaviorSubject<ToDoList[]>([]); // Holds the latest ToDoList
+  private toDoListSubject = new BehaviorSubject<ToDoList[]>([]);
 
   constructor(private firebaseService: FirebaseService) {}
 
 
   getToDoLists():Observable<ToDoList[]> {
-    return this.firebaseService.listenToCollection(this.collectionName); // Components will subscribe to this
+    return this.firebaseService.listenToCollection(this.collectionName); 
   }
 
-  // Fetch data from Firebase and update the BehaviorSubject
+
   fetchData() {
     this.firebaseService.listenToCollection(this.collectionName).subscribe(data => {
-      this.toDoListSubject.next(data); // Update the subject with the latest data
+      this.toDoListSubject.next(data); 
     });
   }
 
-  // Add a new item to an existing ToDoList by updating the 'items' array
+  //adding to item in  to-do list
   async addItemToList(docId: string, toDoItem: string): Promise<void> {
     return this.firebaseService.addItemToList(this.collectionName,docId, toDoItem)
   }
+  //adding to-do list
   addToDoList(toDoList: ToDoList) {
     return this.firebaseService.addDocument(this.collectionName, toDoList);
   }
@@ -41,7 +42,7 @@ export class ToDoService {
     deleteToDoList(id: string) {
       return this.firebaseService.deleteDocument(this.collectionName, id);
     }
-
+    //delete only selected Item
     deleteToDoItem(docId: string, itemIndex: number): Promise<void> {
       return this.firebaseService.deleteToDoItem(this.collectionName, docId, itemIndex);
     }

@@ -14,7 +14,7 @@ import { ToDoItem, ToDoList } from '../models/to-do.model';
 })
 export class ToDoComponent implements OnInit {
   toDoLists: any[] = []
-  editedValue = "";
+  editedValue:string = "";
   editingState: { [key: string]: boolean } = {};
 
   constructor(private toDoService: ToDoService) { }
