@@ -3,6 +3,7 @@ import { ToDoComponent } from './to-do/to-do.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -10,5 +11,6 @@ export const routes: Routes = [
   { path: 'to-do', component: ToDoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'dashboard', component: DashboardComponent },
 
 ];

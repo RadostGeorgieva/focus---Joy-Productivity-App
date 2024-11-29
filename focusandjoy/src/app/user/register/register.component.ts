@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth'
-import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,8 +16,10 @@ export class RegisterComponent implements OnInit {
   password: string = "";
   currentUser: any;
 
-  constructor(private userService: UserService,
-    private afAuth: AngularFireAuth) { }
+  constructor(
+    private userService: UserService,
+    private afAuth: AngularFireAuth,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.afAuth.authState.subscribe(user => {
@@ -30,7 +32,13 @@ export class RegisterComponent implements OnInit {
       next: (response) => {
         this.email = '';
         this.password = '';
-      }
+        this.afAuth.authState.subscribe(user => {
+
+          if (user) {
+            this.router.navigate(['/home']); //
+          }
+        });
+      },
     });
   }
 }

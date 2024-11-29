@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth'
-import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +15,10 @@ export class LoginComponent {
   email: string = "";
   password: string = "";
 
-  constructor(private userService: UserService,
-    private afAuth: AngularFireAuth) { }
+  constructor(
+    private userService: UserService,
+    private afAuth: AngularFireAuth,
+    private router: Router) { }
 
   loginUser(user: { email: string, password: string }) {
     this.userService.loginUser(user).subscribe({
@@ -24,16 +26,12 @@ export class LoginComponent {
         this.email = '';
         this.password = '';
         this.afAuth.authState.subscribe(user => {
+
           if (user) {
-            console.log('User logged in:', user);
-          } else {
-            console.log('No user logged in');
+            this.router.navigate(['/home']); //
           }
         });
       },
-      error: (error) => {
-        console.error('Login failed:', error);
-      }
     });
   }
 }

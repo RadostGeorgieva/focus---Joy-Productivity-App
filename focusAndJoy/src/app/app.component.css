@@ -51,6 +51,10 @@ nav ul li a {
     transition: all 0.3s ease-in-out;
 }
 
+.logout{
+    cursor: pointer;
+}
+
 nav ul li a:hover {
     color: #1F1B16; /* Dark Background */
     background-color: #AA9166; /* Gold */

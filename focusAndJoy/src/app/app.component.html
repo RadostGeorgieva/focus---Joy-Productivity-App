@@ -5,10 +5,16 @@
     <nav>
         <ul>
             <li><a routerLink="/home">Home</a></li>
+            <li><a routerLink="/dashboard">My Dashboard</a></li>
             <li><a routerLink="/to-do">To-Do-App</a></li>
             <li><a routerLink="/catalog">Catalog</a></li>
+            @if (!isLoggedIn) {
             <li><a routerLink="/login">Login</a></li>
             <li><a routerLink="/register">Register</a></li>
+            }@else {
+                <li><a (click)="logout()" class="logout">Logout</a></li>
+            }
+
         </ul>
     </nav>
 </header>

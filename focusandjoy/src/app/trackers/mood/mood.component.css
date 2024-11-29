@@ -11,6 +11,7 @@
     max-width: 500px;
     margin: 0 auto;
 }
+
 .today {
     margin: 10px;
     background-color: #B7E0B8;
@@ -22,10 +23,12 @@
     align-items: center;
 
 }
+
 .today-mood p {
     font-size: 1.8rem;
 }
-.today img{
+
+.today img {
     width: 100px;
     height: 100px;
     object-fit: contain;
@@ -40,16 +43,17 @@
     color: #007BFF;
     background: linear-gradient(45deg, #007BFF, #FFD700, #FF1493);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* Makes gradient apply to text */
+    -webkit-text-fill-color: transparent;
+    /* Makes gradient apply to text */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
     text-align: center;
-  
+
     animation: bounce 1.5s infinite ease-in-out;
 }
 
 
-.mood-icon{
+.mood-icon {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -68,7 +72,8 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
 }
-.mood-wrapper{
+
+.mood-wrapper {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -94,3 +99,88 @@
 
 
 
+.boquet-today img {
+    width: 80px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+
+}
+
+/* Styling the pseudo-element */
+.today-mood::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    width: 18%;
+    height: 60px;
+    background-color: rgba(227, 126, 218, 0.3);
+    z-index: 1;
+    clip-path: polygon(50% 0%, 100% 25%, 75% 100%, 25% 100%, 0% 25%);
+    transform: rotate(30deg) scale(1.2);
+
+}
+.today-mood::before {
+    content: "";
+    position: absolute;
+    top: 60%;
+    left: 90px;
+    width: 18%;
+    height: 50px;
+    background-color: rgba(243, 224, 80, 0.3);
+    z-index: 1;
+    clip-path: polygon(50% 0%, 100% 25%, 75% 100%, 25% 100%, 0% 25%);
+    transform: rotate(-160deg) scale(1.2);
+    filter: blur(5px);
+
+}
+
+.today-mood {
+    position: relative;
+    padding: 20px;
+    background: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.today-mood:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+
+  /* blob containers h1 + svg */
+  .blob {
+    display: grid;
+    grid-template-columns: repeat(10 , 5vw);
+    grid-template-rows: repeat(10 , 5vw);
+  }
+  
+  /* reset svg to width of container, used blobmaker.app to make this and the viewbox comes with some padding */
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+
+  .blob svg { 
+    grid-column: 1 / span 7;
+    grid-row-start: 2;
+    fill: rgba(227, 126, 218, 0.3);
+    transition: 0.3s all;
+  }
+  .blob img {
+    width: 100px;
+  }
+  

@@ -13,7 +13,110 @@ main h1 {
     font-size: 4rem;
     margin: 100px 0 40px;
     text-align: center;
-    color: #D9C2A9;
+    color: #D9C2A9;body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #341515;
+        color: #aca494;
+      }
+      
+      .main-page {
+        padding: 2rem;
+      }
+      
+      main h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #aca494;
+      }
+      
+      .introduction {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 2rem 0;
+      }
+      
+      .intro-wrapper {
+        max-width: 50%;
+      }
+      
+      .trackers-list {
+        list-style-type: square;
+        color: #6f6a61;
+      }
+      
+      .trackers-list li {
+        margin: 0.5rem 0;
+      }
+      
+      .buttons p {
+        margin: 1rem 0;
+        font-size: 1rem;
+        color: #aca494;
+      }
+      
+      .icon {
+        color: #4d0a18;
+        margin-right: 0.5rem;
+      }
+      
+      .photo-examples img {
+        max-width: 100%;
+        border-radius: 0.5rem;
+        border: 2px solid #795d4c;
+      }
+      
+      .cta {
+        text-align: center;
+        margin: 2rem 0;
+      }
+      
+      .sign-up-btn {
+        background-color: #4d0a18;
+        color: #aca494;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+      }
+      
+      .sign-up-btn:hover {
+        background-color: #795d4c;
+      }
+      
+      .learn-more-link {
+        display: inline-block;
+        margin-top: 1rem;
+        color: #aca494;
+        text-decoration: none;
+      }
+      
+      .learn-more-link:hover {
+        text-decoration: underline;
+      }
+      
+      .testimonials {
+        background-color: #6f6a61;
+        padding: 1rem;
+        margin-top: 2rem;
+        border-radius: 0.5rem;
+      }
+      
+      .testimonials blockquote {
+        font-style: italic;
+        color: #341515;
+      }
+      
+      .testimonials span {
+        display: block;
+        text-align: right;
+        font-size: 0.9rem;
+        color: #aca494;
+      }
+      
     text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6); /* Adds mystery */
     border-bottom: 2px solid #AA9166; /* Antique gold underline */
     display: inline-block;
