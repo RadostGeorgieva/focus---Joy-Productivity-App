@@ -1,0 +1,24 @@
+#sleep-tracker {
+    display: grid;
+    grid-template-columns: repeat(17, 20px); /* 24 hours */
+    grid-template-rows: repeat(7, 50px); /* 7 days */
+    gap: 10px;
+    margin: 10px;
+}
+
+.day {
+    display: contents;
+}
+
+.hour-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: lightblue;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hour-circle.active {
+    background-color: lightgreen; /* Highlight selected circles */
+}
