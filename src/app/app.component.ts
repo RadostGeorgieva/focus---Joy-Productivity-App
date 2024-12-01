@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
-import { FirestoreCheckService } from './services/firestore-check.service';
 import { FirebaseService } from './services/firebase.service';
 import { DocumentData } from 'firebase/firestore';
 import { CommonModule } from '@angular/common';
@@ -10,6 +9,7 @@ import { ToDoItem, ToDoList } from './models/to-do.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { ToDoService } from './services/to-do.service';  // Import your ToDoItem model
+import { SleepService } from './services/sleep-data.service';
 
 @Component({
   selector: 'app-root',
@@ -27,9 +27,9 @@ export class AppComponent implements OnInit {
 
 
   constructor(
-    private firestoreCheckService: FirestoreCheckService,
     private firebaseService: FirebaseService,
     private toDoService: ToDoService,
+    private sleepService: SleepService,
     private afAuth: AngularFireAuth,
     private router: Router
   ) { }

@@ -5,6 +5,7 @@ h2 {
 .week {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     margin: 20px auto;
 }

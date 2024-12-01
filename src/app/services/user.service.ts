@@ -46,7 +46,7 @@ export class UserService {
 
   // Logout user
   logoutUser(): Observable<any> {
-    return from(this.afAuth.signOut());;
+    return from(this.afAuth.signOut());
   }
 
   // Delete user from Firestore
@@ -64,6 +64,15 @@ export class UserService {
   getUserProfile(userId: string): Observable<any> {
     return this.firestore.collection(this.usersCollection).doc(userId).valueChanges();
   }
+
+  // Get currently authenticated user ID
+getCurrentUserId(): Observable<string | null> {
+  return this.afAuth.authState.pipe(
+    switchMap((user) => {
+      return user ? from(Promise.resolve(user.uid)) : from(Promise.resolve(null));
+    })
+  );
+}
 
   // Update user data in Firestore (e.g., profile information)
   updateUser(userId: string, updates: any): Observable<any> {

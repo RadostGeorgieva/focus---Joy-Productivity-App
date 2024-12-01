@@ -1,4 +1,4 @@
-/* General Header Styles */
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -6,10 +6,9 @@
     padding: 20px 40px;
     background-color: #2E2A25;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    border-bottom: 2px solid #AA9166; /* Gold accent */
+    border-bottom: 2px solid #AA9166; 
 }
 
-/* Logo Styles */
 .logo p {
     font-size: 2rem;
     font-weight: bold;
@@ -20,14 +19,14 @@
 }
 
 .logo #focus {
-    color: #AA9166; /* Gold */
+    color: #AA9166; 
 }
 
 .logo #joy {
-    color: #C8B6A3; /* Muted Tan */
+    color: #C8B6A3; 
 }
 
-/* Navigation Styles */
+
 nav ul {
     display: flex;
     list-style: none;
@@ -45,7 +44,7 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #D9C2A9; /* Parchment */
+    color: #D9C2A9; 
     padding: 10px 15px;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -56,11 +55,11 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #1F1B16; /* Dark Background */
-    background-color: #AA9166; /* Gold */
+    color: #1F1B16; 
+    background-color: #AA9166; 
 }
 
-/* Footer Styles */
+
 .footer {
     margin-top: 40px;
     padding: 20px 40px;
@@ -78,7 +77,7 @@ nav ul li a:hover {
 }
 
 .footer a:hover {
-    color: #8C744B; /* Darker Gold */
+    color: #8C744B; 
     text-decoration: underline;
 }
 

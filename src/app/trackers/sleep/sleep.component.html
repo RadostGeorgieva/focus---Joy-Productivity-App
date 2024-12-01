@@ -1,172 +1,195 @@
-<h2>Hours of sleep</h2>
-<div id="sleep-tracker">
-    <div class="day" id="monday">
-        <div class="header-hour">1</div>
-        <div class="header-hour">2</div>
-        <div class="header-hour">3</div>
-        <div class="header-hour">4</div>
-        <div class="header-hour">5</div>
-        <div class="header-hour">6</div>
-        <div class="header-hour">7</div>
-        <div class="header-hour">8</div>
-        <div class="header-hour">9</div>
-        <div class="header-hour">10</div>
-        <div class="header-hour">11</div>
-        <div class="header-hour">12</div>
-        <div class="header-hour">13</div>
-        <div class="header-hour">14</div>
-        <div class="header-hour">15</div>
-        <div class="header-hour">16</div>
-        <div class="header-hour">17</div>
+<div class="wrapper">
+    <h2>Hours of sleep</h2>
+    <div id="sleep-tracker">
+        <div class="day-label"></div>
+        <div class="day-label">Monday</div>
+        <div class="day-label">Tuesday</div>
+        <div class="day-label">Wednesday</div>
+        <div class="day-label">Thursday</div>
+        <div class="day-label">Friday</div>
+        <div class="day-label">Saturday</div>
+        <div class="day-label">Sunday</div>
 
-        <!-- More circles for each hour... -->
-    </div>
-    <div class="day" id="monday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
+        <div class="day" id="hours-header">
+            <div class="header-hour">1</div>
+            <div class="header-hour">2</div>
+            <div class="header-hour">3</div>
+            <div class="header-hour">4</div>
+            <div class="header-hour">5</div>
+            <div class="header-hour">6</div>
+            <div class="header-hour">7</div>
+            <div class="header-hour">8</div>
+            <div class="header-hour">9</div>
+            <div class="header-hour">10</div>
+            <div class="header-hour">11</div>
+            <div class="header-hour">12</div>
+            <div class="header-hour">13</div>
+            <div class="header-hour">14</div>
+            <div class="header-hour">15</div>
+            <div class="header-hour">16</div>
+            <div class="header-hour">17</div>
 
-        <!-- More circles for each hour... -->
-    </div>
-    <div class="day" id="tuesday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
+        </div>
+        <div class="day" id="monday">
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
 
-        <!-- More circles for each hour... -->
-    </div>
-    <div class="day" id="wednesday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
+        </div>
+        <div class="day" id="tuesday">
+           
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
+        </div>
+        <div class="day" id="wednesday">
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
+        </div>
+        <div class="day" id="thursday">
+           
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
+        </div>
+        <div class="day" id="friday">
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
+        </div>
+        <div class="day" id="saturday">
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
+        </div>
+        <div class="day" id="sunday">
 
-        <!-- More circles for each hour... -->
-    </div>
-    <div class="day" id="thursday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="1"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="2"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="3"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="4"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="5"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="6"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="7"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="8"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="9"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="10"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="11"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="12"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="13"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="14"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="15"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="16"></div>
+            <div (click)="hoursSlept($event)" class="hour-circle" data-hour="17"></div>
+        </div>
 
-        <!-- More circles for each hour... -->
     </div>
-    <div class="day" id="friday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
-
-        <!-- More circles for each hour... -->
-    </div>
-    <div class="day" id="saturday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
-
-        <!-- More circles for each hour... -->
-    </div>
-    <div class="day" id="sunday">
-        <div class="hour-circle" data-hour="0"></div>
-        <div class="hour-circle" data-hour="1"></div>
-        <div class="hour-circle" data-hour="2"></div>
-        <div class="hour-circle" data-hour="3"></div>
-        <div class="hour-circle" data-hour="4"></div>
-        <div class="hour-circle" data-hour="5"></div>
-        <div class="hour-circle" data-hour="6"></div>
-        <div class="hour-circle" data-hour="7"></div>
-        <div class="hour-circle" data-hour="8"></div>
-        <div class="hour-circle" data-hour="9"></div>
-        <div class="hour-circle" data-hour="10"></div>
-        <div class="hour-circle" data-hour="11"></div>
-        <div class="hour-circle" data-hour="12"></div>
-        <div class="hour-circle" data-hour="13"></div>
-        <div class="hour-circle" data-hour="14"></div>
-        <div class="hour-circle" data-hour="15"></div>
-        <div class="hour-circle" data-hour="16"></div>
-
-        <!-- More circles for each hour... -->
-    </div>
-    <!-- Repeat for other days (Wednesday, Thursday, etc.) -->
 </div>
+
+<div class="today-sleep">
+    <h3>Sleep Tracker for {{ selectedDate }}</h3>
+    
+    <!-- Sleep Quality -->
+    <div class="form-group">
+      <label for="sleepQuality">Sleep Quality</label>
+      <select id="sleepQuality" [(ngModel)]="sleepQuality" name="sleepQuality">
+        <option value="Poor">0</option>
+        <option value="Average">5</option>
+        <option value="Good">10</option>
+      </select>
+    </div>
+  
+    <!-- Dreams -->
+    <div class="form-group">
+      <label for="dreams">Dreams (Optional)</label>
+      <textarea id="dreams" [(ngModel)]="dreams" name="dreams" placeholder="Describe your dreams here..."></textarea>
+    </div>
+  
+    <!-- Save Button -->
+    <button (click)="saveSleepData(dreams, sleepQuality, dreams)">Save</button>
+  </div>

@@ -1,24 +1,151 @@
+* {
+    margin: 5px;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    flex: 33%;
+    align-items: center;
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+}
+
 #sleep-tracker {
     display: grid;
-    grid-template-columns: repeat(17, 20px); /* 24 hours */
-    grid-template-rows: repeat(7, 50px); /* 7 days */
-    gap: 10px;
-    margin: 10px;
+    grid-template-columns: auto repeat(17, 1fr);
+    grid-template-rows: auto repeat(7, auto);
+    gap: 5px;
+
+}
+
+#hours-header {
+    grid-column: 2 / -1;
+    display: grid;
+    grid-template-columns: repeat(17, 1fr);
+    gap: 5px;
+    justify-items: center;
+}
+
+
+.days-header {
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: repeat(8, auto);
+    gap: 5px;
+
+}
+
+.day-label {
+    grid-column: 1;
+    text-align: center;
+    font-weight: bold;
 }
 
 .day {
-    display: contents;
+    display: grid;
+    grid-template-columns: repeat(17, 1fr);
+    grid-column: 2 / -1;
+    gap: 5px;
+}
+
+#hours-header {
+    grid-row: 1;
+}
+
+#days-header {
+    grid-column: 1;
+}
+
+#monday {
+    grid-row: 2;
+}
+
+#tuesday {
+    grid-row: 3;
+}
+
+#wednesday {
+    grid-row: 4;
+}
+
+#thursday {
+    grid-row: 5;
+}
+
+#friday {
+    grid-row: 6;
+}
+
+#saturday {
+    grid-row: 7;
+}
+
+#sunday {
+    grid-row: 8;
 }
 
 .hour-circle {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: lightblue;
+    margin: auto;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+}
+.hour-circle:hover {
+    background-color: blue;
 }
 
-.hour-circle.active {
-    background-color: lightgreen; /* Highlight selected circles */
+
+.header-hour {
+    text-align: center;
+    font-size: 1.3rem;
+    justify-content: center;
+    align-items: center;
 }
+
+
+/* sleep-TODAY.component.css */
+.today-sleep {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: aliceblue;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }

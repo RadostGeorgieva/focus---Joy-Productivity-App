@@ -20,7 +20,7 @@ export class ToDoComponent implements OnInit {
   constructor(private toDoService: ToDoService) { }
 
   ngOnInit(): void {
-    this.toDoService.getToDoLists().subscribe((data) => {
+    this.toDoService.getCollectionData().subscribe((data) => {
       this.toDoLists = data
     });
     this.toDoService.fetchData();

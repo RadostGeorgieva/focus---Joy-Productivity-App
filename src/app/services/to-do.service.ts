@@ -14,7 +14,7 @@ export class ToDoService {
   constructor(private firebaseService: FirebaseService) {}
 
 
-  getToDoLists():Observable<ToDoList[]> {
+  getCollectionData():Observable<ToDoList[]> {
     return this.firebaseService.listenToCollection(this.collectionName); 
   }
 
