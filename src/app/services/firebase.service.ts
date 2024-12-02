@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { arrayUnion, getFirestore, collection, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc } from 'firebase/firestore';
 import { environment } from '../../environments/environment';
 import { ToDoItem, ToDoList } from '../models/to-do.model';
 import { Observable, from, BehaviorSubject } from 'rxjs';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -17,15 +19,14 @@ export class FirebaseService {
     this.db = getFirestore(app);  // Get Firestore instance
   }
 
-  // Real-time data listener for Firestore collection
-  listenToCollection(collectionName: string): Observable<any[]> {
+  //ONLY FOR TODO!
+  listenToToDoCollection(collectionName: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
 
     const collectionRef = collection(this.db, collectionName);
     onSnapshot(collectionRef, (querySnapshot) => {
       const data: any[] = querySnapshot.docs.map(doc => {
         const docData = doc.data();
-        const documentId = doc.id; // Get document ID
         if (collectionName === "to-do-lists") {
           return {
             id: doc.id,
@@ -33,13 +34,11 @@ export class FirebaseService {
             items: docData['items'] || [],
             createdAt: docData['createdAt'] ? docData['createdAt'].toDate().toISOString() : '',
           };
-        } else {
-          return {
-            id: doc.id,
-            data: docData
-          }
         }
-      });
+        else {
+          return null
+        }
+      })
 
       collectionSubject.next(data);
     });
@@ -47,14 +46,41 @@ export class FirebaseService {
     return collectionSubject.asObservable();
   }
 
-  // Adding a new document to the collection
-  async addDocument(collectionName: string, data: any) {
-    try {
-      await addDoc(collection(this.db, collectionName), data);
+  listenToCollection(collectionName: string, uid: string | null, internalCollection: string): Observable<any[]> {
+    const collectionSubject = new BehaviorSubject<any[]>([]);
+    if(uid){
+      const userRef = doc(this.db, collectionName, uid);
+    const otherCollectionRef = collection(userRef, internalCollection);
+    onSnapshot(otherCollectionRef, (querySnapshot) => {
+      const data: any[] = querySnapshot.docs.map(doc => {
+        const docData = doc.data();
+          return {
+            id: doc.id,
+            data: docData,
+          };
+      })
 
-      console.log('Document added successfully');
+      collectionSubject.next(data);
+    });
+  }
+    return collectionSubject.asObservable();
+  }
+
+  async addDocument(collectionName: string, userId: string, data: any, trackerName: string) {
+    try {
+      console.log(userId);
+      const innerCollectionDataRef = collection(this.db, collectionName, userId, trackerName);
+      const now = new Date();
+      now.setHours(now.getHours() + 2);
+      const documentId = `sleep_${now.toISOString()}`;
+
+      await setDoc(doc(innerCollectionDataRef, documentId), {
+        ...data,
+        timestamp: Timestamp.now(),
+      });
+      console.log('Document added successfully:',);
     } catch (error) {
-      console.error("data:", data,"---",'Error adding document:', error);
+      console.error('Error adding document:', error);
     }
   }
 

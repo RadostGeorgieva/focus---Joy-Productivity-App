@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { BehaviorSubject, Observable, from } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators'; // Make sure this is imported
+import { catchError, switchMap} from 'rxjs/operators'; // Make sure this is imported
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -66,15 +67,15 @@ export class UserService {
   }
 
   // Get currently authenticated user ID
-getCurrentUserId(): Observable<string | null> {
-  return this.afAuth.authState.pipe(
-    switchMap((user) => {
-      return user ? from(Promise.resolve(user.uid)) : from(Promise.resolve(null));
-    })
-  );
-}
+  getCurrentUserId(): Observable<string | null> {
+    return this.afAuth.authState.pipe(
+      switchMap((user) => {
+        return user ? of(user.uid) : of(null); 
+      })
+    );
+  }
 
-  // Update user data in Firestore (e.g., profile information)
+  // Update user data in Firestore 
   updateUser(userId: string, updates: any): Observable<any> {
     return from(
       this.firestore.collection(this.usersCollection).doc(userId).update(updates)

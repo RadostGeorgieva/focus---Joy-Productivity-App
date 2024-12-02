@@ -15,12 +15,12 @@ export class ToDoService {
 
 
   getCollectionData():Observable<ToDoList[]> {
-    return this.firebaseService.listenToCollection(this.collectionName); 
+    return this.firebaseService.listenToToDoCollection(this.collectionName); 
   }
 
 
   fetchData() {
-    this.firebaseService.listenToCollection(this.collectionName).subscribe(data => {
+    this.firebaseService.listenToToDoCollection(this.collectionName).subscribe(data => {
       this.toDoListSubject.next(data); 
     });
   }
@@ -31,7 +31,8 @@ export class ToDoService {
   }
   //adding to-do list
   addToDoList(toDoList: ToDoList) {
-    return this.firebaseService.addDocument(this.collectionName, toDoList);
+    let user = ""
+    //return this.firebaseService.addDocument(this.collectionName,user, toDoList);
   }
     // Update existing to-do list
     updateToDoList(id: string, toDoItem: string, index:number) {

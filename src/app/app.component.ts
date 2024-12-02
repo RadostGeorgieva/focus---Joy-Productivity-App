@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.firebaseService.listenToCollection('to-do-lists').subscribe((data) => {
+    this.firebaseService.listenToToDoCollection('to-do-lists').subscribe((data) => {
       this.toDoLists = data;
     });
 
