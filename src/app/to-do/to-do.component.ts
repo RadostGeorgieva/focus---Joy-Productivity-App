@@ -79,7 +79,7 @@ export class ToDoComponent implements OnInit {
   }
   //deleting:
   deleteItem(id: string, index: number) {
-
+    let indexToNumber = Number
     this.toDoService.deleteToDoItem(id, index);
   }
 

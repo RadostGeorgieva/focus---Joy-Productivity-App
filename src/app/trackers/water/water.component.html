@@ -1,0 +1,35 @@
+<section class="water-tracker">
+    <h3>Water Tracker</h3>
+    <div class="weekly-tracker">
+        @for(day of this.week; track $index) {
+            <div class="day" [attr.data-day]="day.day">
+                <h4>{{day.day}} {{day.date?.getDate()}}/{{day.date?.getMonth()}}</h4>
+                <div class="progress-container">
+                    <div class="progress-text">
+                        @if(day.editing) {
+                            <input [(ngModel)]="day.loggedWater" type="number" min="0" placeholder="e.g., 2000"/>
+                            <input [(ngModel)]="day.goalWater" type="number" min="0" placeholder="e.g., 2000" />
+                            <button (click)="toggleEdit(day)">Save</button>
+                        } @else {
+                            <p class="editTarget" (click)="toggleEdit(day)">{{ day.loggedWater }}ml / {{ day.goalWater }}ml</p>
+                        }
+                      
+                    </div>
+                    <div class="progress">
+                      <div
+                        class="progress-bar"
+                        [style.width]="(day.loggedWater / day.goalWater) * 100 + '%'">
+                      </div>
+                    </div>
+                  </div>
+                <div class="add-water">
+                    @if(day.adding) {
+                        <input  [(ngModel)]="day.inputAmount" type="number" id="water-amount" min="0" placeholder="e.g., 250">
+                    }
+                    <button class="add-button" (click)="toggleInput(day)">+</button>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+a

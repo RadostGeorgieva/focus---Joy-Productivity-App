@@ -20,11 +20,12 @@ export class SleepComponent implements OnInit {
   endTime: number = 0;
   selectedDate: Date = new Date()
   dreams: string = "";
+  id: string = "";
   sleepQuality: number = 0;
   hours: number = 0;
   addingSleepLog: boolean = false;
   hasLog: boolean = false;
-  weekDays: { date: Date, label: string, hours: number}[] = [];
+  weekDays: { date: Date, label: string, hours: number, hasDetails: boolean }[] = [];
   private dataSubscription: Subscription = new Subscription();
 
   constructor(private sleepService: SleepService) { }
@@ -62,26 +63,25 @@ export class SleepComponent implements OnInit {
       this.weekDays.push({
         date: new Date(weekDay),
         label: weekDay.toLocaleDateString('en-US', { weekday: 'short' }),
-        hours: 0
+        hours: 0,
+        hasDetails: false,
       });
     }
 
   }
 
-  addLog(sleepQuality: number, dreams: string, startTime: number, endTime: number) {
+  addLog() {
 
     const data = {
       date: this.selectedDate,
       dreams: this.dreams,
       startTime: this.startTime,
       endTime: this.endTime,
-      sleepQuality: this.sleepQuality,
-      hours: this.hours
+      sleepQuality: this.sleepQuality
     };
 
     this.sleepService.addSleepData(data)
     this.addingSleepLog = false;
-
     this.dreams = ""
     this.startTime = 0;
     this.endTime = 0;
@@ -89,41 +89,62 @@ export class SleepComponent implements OnInit {
     this.hasLog = false;
 
   }
-  editLog(sleepQuality: number, dreams: string, startTime: number, endTime: number) {
+  editLog(sleepQuality: number, dreams: string, startTime: number, endTime: number, id: string, selectedDate: Date) {
 
     const data = {
-      date: this.selectedDate,
-      dreams: this.dreams,
-      startTime: this.startTime,
-      endTime: this.endTime,
-      sleepQuality: this.sleepQuality,
-      hours: this.hours
+      date: selectedDate,
+      dreams: dreams,
+      startTime: startTime,
+      endTime: endTime,
+      sleepQuality: sleepQuality,
     };
-    this.sleepService.addSleepData(data)
+    this.sleepService.editSleepData(data, id)
     this.addingSleepLog = false;
     this.dreams = ""
     this.startTime = 0;
     this.endTime = 0;
     this.sleepQuality = 0;
- 
+    this.id = "";
     this.hasLog = false;
   }
+
   showSleepLogForm(date: Date) {
     this.addingSleepLog = !this.addingSleepLog;
-    console.log(this.weekDays);
-    
     this.selectedDate = date;
-      for(let day of this.weekDays) {
-      if (date == day.date && day.hours!=0)  {
-          this.hasLog = true;
-          return;
-        }
+  }
+
+  showSleepEditForm(selectedDate: Date) {
+    this.selectedDate = selectedDate;
+    this.addingSleepLog = !this.addingSleepLog;
+
+    for (let day of this.sleepData) {
+      const date = new Date(day.data.date.seconds * 1000);
+      if (
+        selectedDate.getFullYear() === date.getFullYear() &&
+        selectedDate.getMonth() === date.getMonth() &&
+        selectedDate.getDate() === date.getDate()
+      ) {
+
+        this.hasLog = true;
+        this.dreams = day.data.dreams;
+        this.startTime = day.data.startTime;
+        this.endTime = day.data.endTime;
+        this.sleepQuality = day.data.sleepQuality;
+        this.id = day.id;
+        return;
       }
+      else {
+        this.hasLog = false;
+      }
+    }
   }
 
   loadLogsForWeek(): void {
     this.weekDays.forEach((day) => {
+
       for (let logDate of this.sleepData) {
+
+
         const date = new Date(logDate.data.date.seconds * 1000);
         if (
           date.getFullYear() === day.date.getFullYear() &&
@@ -131,22 +152,27 @@ export class SleepComponent implements OnInit {
           date.getDate() === day.date.getDate()
         ) {
           day.hours = logDate.data.hours
-          
+          if (
+            logDate.data.dreams ||
+            logDate.data.startTime ||
+            logDate.data.endTime ||
+            logDate.data.sleepQuality
+          ) {
+            day.hasDetails = true;
+          }
         }
       }
-    });
-
-    console.log(this.weekDays);
+    })
   }
-  hoursSlept(event: MouseEvent) {
+  hoursSlept(event: MouseEvent, date: Date) {
 
     const currentElement = event.target as HTMLElement;
     const hours: string | null = currentElement.getAttribute('data-hour');
+
     this.hours = Number(hours);
-
-    this.resetColor(Number(hours), currentElement);
+    this.sleepService.addHours(date, this.hours)
+    this.resetColor(currentElement);
     let previousElement = currentElement.previousElementSibling;
-
     currentElement.style.backgroundColor = 'blue';
     while (previousElement) {
       let item = previousElement as HTMLElement
@@ -155,7 +181,7 @@ export class SleepComponent implements OnInit {
     }
   }
 
-  resetColor(hours: number, currentElement: HTMLElement) {
+  resetColor(currentElement: HTMLElement) {
 
     for (let i = 1; i <= 17; i++) {
       const parentElement = currentElement.closest('.day');
@@ -163,7 +189,8 @@ export class SleepComponent implements OnInit {
         Array.from(parentElement.children).forEach((child, index) => {
           const circle = child as HTMLElement;
           circle.style.backgroundColor = '#ADD8E6';
-          if (child.tagName.toLowerCase() === 'button') {
+
+          if (child.classList.contains('edited')) {
             const button = child as HTMLElement;
             button.style.backgroundColor = 'blue';
           }

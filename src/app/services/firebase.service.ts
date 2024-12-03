@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc } from 'firebase/firestore';
+import { query, where, DocumentReference,arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
 import { environment } from '../../environments/environment';
 import { ToDoItem, ToDoList } from '../models/to-do.model';
 import { Observable, from, BehaviorSubject } from 'rxjs';
@@ -48,39 +48,67 @@ export class FirebaseService {
 
   listenToCollection(collectionName: string, uid: string | null, internalCollection: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
-    if(uid){
+    if (uid) {
       const userRef = doc(this.db, collectionName, uid);
-    const otherCollectionRef = collection(userRef, internalCollection);
-    onSnapshot(otherCollectionRef, (querySnapshot) => {
-      const data: any[] = querySnapshot.docs.map(doc => {
-        const docData = doc.data();
+      const otherCollectionRef = collection(userRef, internalCollection);
+      onSnapshot(otherCollectionRef, (querySnapshot) => {
+        const data: any[] = querySnapshot.docs.map(doc => {
+          const docData = doc.data();
           return {
             id: doc.id,
             data: docData,
           };
-      })
+        })
 
-      collectionSubject.next(data);
-    });
-  }
+        collectionSubject.next(data);
+      });
+    }
     return collectionSubject.asObservable();
   }
 
   async addDocument(collectionName: string, userId: string, data: any, trackerName: string) {
     try {
-      console.log(userId);
+
       const innerCollectionDataRef = collection(this.db, collectionName, userId, trackerName);
       const now = new Date();
       now.setHours(now.getHours() + 2);
-      const documentId = `sleep_${now.toISOString()}`;
+      const documentId = `${trackerName}_${now.toISOString()}`;
+      const dateToCheck = data.date;
 
-      await setDoc(doc(innerCollectionDataRef, documentId), {
-        ...data,
-        timestamp: Timestamp.now(),
-      });
-      console.log('Document added successfully:',);
+      const q = query(innerCollectionDataRef, where("date", "==", dateToCheck));
+      const querySnapshot = await getDocs(q);
+      console.log("query:", querySnapshot);
+      if (!querySnapshot.empty) {
+        // If a matching document is found, merge the new data with the existing data
+        querySnapshot.forEach(async (docSnapshot) => {
+          const docId = docSnapshot.id; // Use the existing document's ID
+          const existingData = docSnapshot.data(); // Get existing data
+  
+          // Merge the existing data with the new data
+          const mergedData = {
+            ...existingData,
+            ...data, // New data overwrites fields if they exist
+          };
+          console.log("new data:", data);
+          console.log("existing data:", existingData);
+          console.log("merged data:", mergedData);
+          
+          await setDoc(doc(innerCollectionDataRef, docId), mergedData);
+          console.log("Document updated with merged data:", mergedData);
+        });
+      } else {
+        // If no matching document is found, create a new one
+        const now = new Date();
+        now.setHours(now.getHours() + 2);
+        const documentId = `${trackerName}_${now.toISOString()}`;
+  
+        await setDoc(doc(innerCollectionDataRef, documentId), {
+          ...data,
+        });
+        console.log("New document added successfully:", data);
+      }
     } catch (error) {
-      console.error('Error adding document:', error);
+      console.error("Error adding or merging document:", error);
     }
   }
 
@@ -99,27 +127,38 @@ export class FirebaseService {
   }
 
 
-  async updateDocument(collectionName: string, docId: string, index: number, updatedItem: string) {
+  async updateDocument(collectionName: string,docId: string,index: string | number,updatedItem: any,innerCollection?: string
+  ): Promise<void> {
     try {
-      const documentRef = doc(this.db, collectionName, docId);
+      // Reference to the document, either in the main collection or an inner collection
+      let documentRef: DocumentReference;
+  
+      if (innerCollection) {
+        // Use the inner collection if specified
+        documentRef = doc(this.db, collectionName, docId, innerCollection, `${index}`);
+      } else {
+        // Default to the main collection if no inner collection is specified
+        documentRef = doc(this.db, collectionName, docId);
+        console.log(documentRef);
+      }
 
+      // Fetch the document
       const currentDoc = await getDoc(documentRef);
-
+  
       if (!currentDoc.exists()) {
         console.error("Document does not exist!");
-        return
-      }
-      const currentData = currentDoc.data();
-      const items = currentData['items'] || [];
-      items[index] = updatedItem;
-      await updateDoc(documentRef, {
-        items: items,
-      });
-      console.log('Document updated successfully');
-    } catch (error) {
-      console.error('Error updating document:', error);
+        return;
+      } else {
+        const currentData = currentDoc.data();
+        console.log(currentData);
+
+      await setDoc(documentRef, updatedItem);
+      console.log("Document updated successfully.");
     }
+  } catch (error) {
+    console.error("Error updating document:", error);
   }
+}
 
 
   async deleteDocument(collectionName: string, docId: string) {

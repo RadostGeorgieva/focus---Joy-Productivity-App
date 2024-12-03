@@ -14,15 +14,15 @@
             @for (day of weekDays; track $index) {
             <div class="day" id="{{day.label.toLowerCase()}}">
                 @for (hour of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]; track $index) {
-                @if(day.hours!=0 && hour<= day.hours) { <div (click)="hoursSlept($event)" class="hour-circle blue-dot"
+                @if(day.hours!=0 && hour<= day.hours) { <div (click)="hoursSlept($event, day.date)" class="hour-circle blue-dot"
                     [attr.data-hour]="hour">
             </div>
             } @else{
-            <div (click)="hoursSlept($event)" class="hour-circle" [attr.data-hour]="hour"></div>
+            <div (click)="hoursSlept($event, day.date)" class="hour-circle" [attr.data-hour]="hour"></div>
             }
             }
-            @if(day.hours!=0) {
-            <div class="sleepLog edited" (click)="showSleepLogForm(day.date)">Edit Details</div>
+            @if(day.hasDetails) {
+            <div class="sleepLog edited" (click)="showSleepEditForm(day.date)">Edit Details</div>
             } @else{
 
             <div class="sleepLog" (click)="showSleepLogForm(day.date)">Add Details</div>
@@ -71,9 +71,9 @@
             <textarea id="dreams" [(ngModel)]="this.dreams" name="dreams"
                 placeholder="Describe your dreams here..."></textarea>
             @if(this.hasLog) {
-                <button (click)="editLog(this.sleepQuality, this.dreams,this.startTime, this.endTime)">Edit data</button>
+                <button (click)="editLog(this.sleepQuality, this.dreams,this.startTime, this.endTime, this.id, selectedDate)">Edit data</button>
             } @else {
-                <button (click)="addLog(this.sleepQuality, this.dreams,this.startTime, this.endTime)">Log data</button>
+                <button (click)="addLog()">Log data</button>
             }
         </div>
 

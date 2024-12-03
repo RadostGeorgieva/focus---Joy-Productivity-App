@@ -3,10 +3,11 @@ import { SleepData } from '../models/sleep-data.model';
 import { FirebaseService } from './firebase.service';
 import { UserService } from './user.service';
 import { from, Observable, BehaviorSubject, firstValueFrom, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { user } from '@angular/fire/auth';
 import { LoginComponent } from '../user/login/login.component';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,28 @@ export class SleepService {
   ) {
   }
 
+  async editSleepData(sleepData: { date: Date, dreams: string, startTime: number, endTime: number, sleepQuality: number}, id:string): Promise<void> {
+    let uid = await firstValueFrom(this.getUID());
+    if (uid) {
 
-  async addSleepData(sleepData: { date: Date, dreams: string, startTime: number, endTime: number, sleepQuality: number, hours: number }): Promise<void> {
+      const updatedItem = {
+        date: sleepData.date,
+        dreams: sleepData.dreams,
+        startTime: sleepData.startTime,
+        endTime: sleepData.endTime,
+        sleepQuality: sleepData.sleepQuality,
+      };
+
+      try {
+        await this.firebaseService.addDocument('UsersData', uid, updatedItem, this.collectionName)
+        console.log("Sleep data updated successfully.");
+      } catch (err) {
+        console.error("Error updating sleep data:", err);
+      }
+    }
+  }
+
+  async addSleepData(sleepData: { date: Date, dreams: string, startTime: number, endTime: number, sleepQuality: number}): Promise<void> {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid)
@@ -33,29 +54,40 @@ export class SleepService {
     });
 
   }
+
+  async addHours(date:Date, hours:number) {
+    this.userService.getCurrentUserId().subscribe({
+      next: (uid) => {
+        if (uid)
+          this.firebaseService.addDocument("UsersData", uid, {date,hours}, this.collectionName)
+        return;
+      },
+    });
+  }
+
   getUID(): Observable<string | null> {
     return from(this.userService.getCurrentUserId());
   }
 
-
   getCollectionData(): Observable<any[]> {
+
     return this.getUID().pipe(
       switchMap((uid) => {
         if (uid) {
           return this.firebaseService.listenToCollection("UsersData", uid, this.collectionName);
         } else {
           console.log('UID not found');
-          return of([]); 
+          return of([]);
         }
       })
     );
   }
 
-fetchData() {
+  fetchData() {
 
-  this.firebaseService.listenToCollection("UsersData", this.uid, this.collectionName).subscribe(data => {
-    this.sleepSubject.next(data);
-  });
-}
+    this.firebaseService.listenToCollection("UsersData", this.uid, this.collectionName).subscribe(data => {
+      this.sleepSubject.next(data);
+    });
+  }
 
 }
