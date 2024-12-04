@@ -1,11 +1,29 @@
-h2 {
-
-}
+section {
+    font-family: 'Poppins', sans-serif;
+    background-color: #C6ABAB; 
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    margin: 20px;
+    text-align: center;
+  }
+  
+  section h2 {
+    color: #cc5353;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
 
 .week {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 20px;
     margin: 20px auto;
+  justify-content: center;
+    align-items:start;
 }
+.sleep-wrap{
+  flex:100%;
+}
+

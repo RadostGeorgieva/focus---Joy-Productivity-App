@@ -15,8 +15,8 @@ export class FirebaseService {
 
 
   constructor() {
-    const app = initializeApp(environment.firebase);  // Initialize Firebase with config
-    this.db = getFirestore(app);  // Get Firestore instance
+    const app = initializeApp(environment.firebase);
+    this.db = getFirestore(app);
   }
 
   //ONLY FOR TODO!
@@ -74,20 +74,22 @@ export class FirebaseService {
       now.setHours(now.getHours() + 2);
       const documentId = `${trackerName}_${now.toISOString()}`;
       const dateToCheck = data.date;
+      dateToCheck.setHours(0, 0, 0, 0);
 
       const q = query(innerCollectionDataRef, where("date", "==", dateToCheck));
+      console.log(dateToCheck);
+      
       const querySnapshot = await getDocs(q);
       console.log("query:", querySnapshot);
       if (!querySnapshot.empty) {
-        // If a matching document is found, merge the new data with the existing data
+       
         querySnapshot.forEach(async (docSnapshot) => {
-          const docId = docSnapshot.id; // Use the existing document's ID
-          const existingData = docSnapshot.data(); // Get existing data
+          const docId = docSnapshot.id; 
+          const existingData = docSnapshot.data(); 
   
-          // Merge the existing data with the new data
           const mergedData = {
             ...existingData,
-            ...data, // New data overwrites fields if they exist
+            ...data, 
           };
           console.log("new data:", data);
           console.log("existing data:", existingData);
@@ -97,7 +99,7 @@ export class FirebaseService {
           console.log("Document updated with merged data:", mergedData);
         });
       } else {
-        // If no matching document is found, create a new one
+        
         const now = new Date();
         now.setHours(now.getHours() + 2);
         const documentId = `${trackerName}_${now.toISOString()}`;
@@ -130,19 +132,19 @@ export class FirebaseService {
   async updateDocument(collectionName: string,docId: string,index: string | number,updatedItem: any,innerCollection?: string
   ): Promise<void> {
     try {
-      // Reference to the document, either in the main collection or an inner collection
+     
       let documentRef: DocumentReference;
   
       if (innerCollection) {
-        // Use the inner collection if specified
+
         documentRef = doc(this.db, collectionName, docId, innerCollection, `${index}`);
       } else {
-        // Default to the main collection if no inner collection is specified
+       
         documentRef = doc(this.db, collectionName, docId);
         console.log(documentRef);
       }
 
-      // Fetch the document
+
       const currentDoc = await getDoc(documentRef);
   
       if (!currentDoc.exists()) {

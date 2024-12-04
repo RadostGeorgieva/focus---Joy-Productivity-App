@@ -99,7 +99,7 @@ export class SleepComponent implements OnInit {
       sleepQuality: sleepQuality,
     };
     this.sleepService.editSleepData(data, id)
-    this.addingSleepLog = false;
+    this.addingSleepLog = true;
     this.dreams = ""
     this.startTime = 0;
     this.endTime = 0;
@@ -173,10 +173,10 @@ export class SleepComponent implements OnInit {
     this.sleepService.addHours(date, this.hours)
     this.resetColor(currentElement);
     let previousElement = currentElement.previousElementSibling;
-    currentElement.style.backgroundColor = 'blue';
+    currentElement.style.backgroundColor = '#38022a';
     while (previousElement) {
       let item = previousElement as HTMLElement
-      item.style.backgroundColor = 'blue';
+      item.style.backgroundColor = '#38022a';
       previousElement = previousElement.previousElementSibling;
     }
   }
@@ -188,11 +188,11 @@ export class SleepComponent implements OnInit {
       if (parentElement) {
         Array.from(parentElement.children).forEach((child, index) => {
           const circle = child as HTMLElement;
-          circle.style.backgroundColor = '#ADD8E6';
+          circle.style.backgroundColor = '#883277';
 
           if (child.classList.contains('edited')) {
             const button = child as HTMLElement;
-            button.style.backgroundColor = 'blue';
+            button.style.backgroundColor = '#38022a';
           }
         });
 

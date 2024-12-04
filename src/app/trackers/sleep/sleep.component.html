@@ -1,8 +1,8 @@
 <section class="sleepComp">
     <div class="wrapper">
-        <h2>Hours of sleep</h2>
+        <h2>SLEEP</h2>
         <div id="sleep-tracker">
-            <div class="day-label"></div>
+            <div class="day-label">Hours</div>
             @for(day of weekDays;track $index) {
             <div class="day-label"> {{ day.label }} {{day.date.getDate()}}/{{day.date.getMonth()+1}}</div>
             }
@@ -14,8 +14,8 @@
             @for (day of weekDays; track $index) {
             <div class="day" id="{{day.label.toLowerCase()}}">
                 @for (hour of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]; track $index) {
-                @if(day.hours!=0 && hour<= day.hours) { <div (click)="hoursSlept($event, day.date)" class="hour-circle blue-dot"
-                    [attr.data-hour]="hour">
+                @if(day.hours!=0 && hour<= day.hours) { <div (click)="hoursSlept($event, day.date)"
+                    class="hour-circle blue-dot" [attr.data-hour]="hour">
             </div>
             } @else{
             <div (click)="hoursSlept($event, day.date)" class="hour-circle" [attr.data-hour]="hour"></div>
@@ -31,6 +31,63 @@
         }
     </div>
     </div>
+    @if (addingSleepLog) {
+    <div class="gosho">
+
+        <div class="sheep-head">
+            <div class="lt-ear"></div>
+            <div class="lt-round-ear"></div>
+            <div class="rt-ear"></div>
+            <div class="rt-round-ear"></div>
+            <div class="lt-eye">
+                <div class="black"></div>
+            </div>
+            <div class="rt-eye">
+                <div class="black"></div>
+            </div>
+            <div class="lt-nose"></div>
+            <div class="rt-nose"></div>
+            <span class="talk">Beeee!</span>
+        </div>
+        <div class="sheep-body"></div>
+        <div class="fur fur-1"></div>
+        <div class="fur fur-2"></div>
+        <div class="fur fur-3"></div>
+        <div class="fur fur-4"></div>
+        <div class="fur fur-5"></div>
+        <div class="fur fur-6"></div>
+        <div class="fur fur-7"></div>
+        <div class="fur fur-8"></div>
+        <div class="fur fur-9"></div>
+        <div class="fur fur-10"></div>
+        <div class="fur fur-11"></div>
+        <div class="fur fur-12"></div>
+        <div class="fur fur-13"></div>
+        <div class="fur fur-14"></div>
+        <div class="fur fur-15"></div>
+        <div class="fur fur-16"></div>
+        <div class="fur fur-17"></div>
+        <div class="fur fur-18"></div>
+        <div class="fur fur-19"></div>
+        <div class="fur fur-20"></div>
+        <div class="fur fur-21"></div>
+        <div class="fur fur-22"></div>
+        <div class="fur fur-23"></div>
+        <div class="fur fur-24"></div>
+        <div class="fur fur-25"></div>
+        <div class="fur fur-26"></div>
+        <div class="leg-lt"></div>
+        <div class="leg-lt-shadow"></div>
+        <div class="foot-lt"></div>
+        <div class="foot-lt-shadow"></div>
+        <div class="leg-rt"></div>
+        <div class="leg-rt-shadow"></div>
+        <div class="foot-rt"></div>
+        <div class="foot-rt-shadow"></div>
+
+
+    </div>
+    }
     @if (addingSleepLog) {
     <div class="today-sleep">
         <h3>Sleep Log for <span
@@ -71,9 +128,11 @@
             <textarea id="dreams" [(ngModel)]="this.dreams" name="dreams"
                 placeholder="Describe your dreams here..."></textarea>
             @if(this.hasLog) {
-                <button (click)="editLog(this.sleepQuality, this.dreams,this.startTime, this.endTime, this.id, selectedDate)">Edit data</button>
+            <button
+                (click)="editLog(this.sleepQuality, this.dreams,this.startTime, this.endTime, this.id, selectedDate)">Edit
+                data</button>
             } @else {
-                <button (click)="addLog()">Log data</button>
+            <button (click)="addLog()">Log data</button>
             }
         </div>
 

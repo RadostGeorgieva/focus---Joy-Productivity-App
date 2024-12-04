@@ -1,5 +1,5 @@
-<section class="water-tracker">
-    <h3>WATER</h3>
+<section class="steps-tracker">
+    <h3>STEPS</h3>
     <div class="weekly-tracker">
         @for(day of this.week; track $index) {
             <div class="day" [attr.data-day]="day.day">
@@ -7,24 +7,24 @@
                 <div class="progress-container">
                     <div class="progress-text">
                         @if(day.editing) {
-                            <input [(ngModel)]="day.loggedWater" type="number" min="0" placeholder="e.g., 2000"/>
-                            <input [(ngModel)]="day.goalWater" type="number" min="0" placeholder="e.g., 2000" />
+                            <input [(ngModel)]="day.loggedSteps" type="number" min="0" placeholder="e.g., 2000"/>
+                            <input [(ngModel)]="day.goalSteps" type="number" min="0" placeholder="e.g., 2000" />
                             <button (click)="toggleEdit(day)">Save</button>
                         } @else {
-                            <p class="editTarget" (click)="toggleEdit(day)">{{ day.loggedWater }}ml / {{ day.goalWater }}ml</p>
+                            <p class="editTarget" (click)="toggleEdit(day)">{{ day.loggedSteps }} steps / {{ day.goalSteps }} steps</p>
                         }
                       
                     </div>
                     <div class="progress">
                       <div
                         class="progress-bar"
-                        [style.width]="(day.loggedWater / day.goalWater) * 100 + '%'">
+                        [style.width]="(day.loggedSteps / day.goalSteps) * 100 + '%'">
                       </div>
                     </div>
                   </div>
-                <div class="add-water">
+                <div class="add-steps">
                     @if(day.adding) {
-                        <input  [(ngModel)]="day.inputAmount" type="number" id="water-amount" min="0" placeholder="e.g., 250">
+                        <input  [(ngModel)]="day.inputAmount" type="number" id="steps-amount" min="0" placeholder="e.g., 250">
                     }
                     <button class="add-button" (click)="toggleInput(day)">+</button>
                 </div>

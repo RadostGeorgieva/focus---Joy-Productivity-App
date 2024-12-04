@@ -7,9 +7,9 @@ import { switchMap, take, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class WaterService {
+export class StepsService {
 
-  private collectionName = 'WaterData';
+  private collectionName = 'StepsData';
   private uid: string | null = null;
   constructor(
     private firebaseService: FirebaseService,
@@ -21,11 +21,11 @@ export class WaterService {
     return from(this.userService.getCurrentUserId());
   }
 
-  async addWaterData(waterData: { date: Date, loggedWater: number, goalWater:number }): Promise<void> {
+  async addStepsData(StepsData: { date: Date, loggedSteps: number, goalSteps:number }): Promise<void> {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid)
-          this.firebaseService.addDocument("UsersData", uid, waterData, this.collectionName)
+          this.firebaseService.addDocument("UsersData", uid, StepsData, this.collectionName)
         return;
       },
     });
