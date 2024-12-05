@@ -1,0 +1,35 @@
+<section class="calories-tracker">
+    <h3>CALORIES</h3>
+    <div class="weekly-tracker">
+        @for(day of this.week; track $index) {
+            <div class="day" [attr.data-day]="day.day">
+                <h4>{{day.day}} {{day.date?.getDate()}}/{{day.date?.getMonth()}}</h4>
+                <div class="progress-container">
+                    <div class="progress-text">
+                        @if(day.editing) {
+                            <input [(ngModel)]="day.loggedCalories" type="number" min="0" placeholder="e.g., 2000"/>
+                            <input [(ngModel)]="day.goalCalories" type="number" min="0" placeholder="e.g., 2000" />
+                            <button (click)="toggleEdit(day)">Save</button>
+                        } @else {
+                            <p class="editTarget" (click)="toggleEdit(day)">{{ day.loggedCalories }} calories / {{ day.goalCalories }} calories</p>
+                        }
+                      
+                    </div>
+                    <div class="progress">
+                      <div
+                        class="progress-bar"
+                        [style.width]="(day.loggedCalories / day.goalCalories) * 100 + '%'">
+                      </div>
+                    </div>
+                  </div>
+                <div class="add-calories">
+                    @if(day.adding) {
+                        <input  [(ngModel)]="day.inputAmount" type="number" id="calories-amount" min="0" placeholder="e.g., 250">
+                    }
+                    <button class="add-button" (click)="toggleInput(day)">+</button>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+

@@ -1,5 +1,5 @@
-<h1>To Do:</h1>
 <div class="to-do">
+    <h1>To Do:</h1>
     @for (list of toDoLists; track $index; let listIndex = $index) {
     <section class="collection">
         <h2 class="collection-title">{{list.collection}}</h2>
@@ -41,7 +41,8 @@
     </section>
     }
 </div>
-
-<p>This is the most basic to-do list that our app offers.</p>
-<p>To customize the to-do app, unlock productivity trackers and progress reports <a href="#">Login</a> or <a
-        href="#">Register</a></p>
+<div class="not-logged-in">
+    <p>This is the most basic to-do list that our app offers.</p>
+    <p>To customize the to-do app, unlock productivity trackers and progress reports <a href="#">Login</a> or <a
+            href="#">Register</a></p>
+</div>

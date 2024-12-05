@@ -24,12 +24,12 @@ export class AppComponent implements OnInit {
   toDoLists: ToDoList[] = [];
   isLoggedIn: boolean = false;
 
+  username: string = "Joy"
+  isDropdownVisible: boolean = false;
 
 
   constructor(
     private firebaseService: FirebaseService,
-    private toDoService: ToDoService,
-    private sleepService: SleepService,
     private afAuth: AngularFireAuth,
     private router: Router
   ) { }
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.firebaseService.listenToToDoCollection('to-do-lists').subscribe((data) => {
       this.toDoLists = data;
+      window.addEventListener('click', (event) => this.closeDropdown(event));
     });
 
     this.afAuth.authState.subscribe(user => {
@@ -45,9 +46,25 @@ export class AppComponent implements OnInit {
   
   logout(): void {
     this.afAuth.signOut().then(() => {
-      this.router.navigate(['/home']); // Redirect to home after logout
+      this.router.navigate(['/home']);
     }).catch(error => {
       console.error('Logout error:', error);
     });
+  }
+
+
+  toggleDropdown(): void {
+    this.isDropdownVisible = !this.isDropdownVisible;
+  }
+
+  closeDropdown(event: MouseEvent): void {
+    const profileElement = document.querySelector('.profile');
+    if (profileElement && !profileElement.contains(event.target as Node)) {
+      this.isDropdownVisible = false;
+    }
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('click', (event) => this.closeDropdown(event));
   }
 }

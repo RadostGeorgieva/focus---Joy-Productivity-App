@@ -4,11 +4,12 @@ import { MoodComponent } from '../trackers/mood/mood.component';
 import { SleepComponent } from '../trackers/sleep/sleep.component';
 import { WaterComponent } from '../trackers/water/water.component';
 import { StepsComponent } from '../trackers/steps/steps.component';
+import { CaloriesComponent } from '../trackers/calories/calories.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [FlowerMoodComponent,MoodComponent, SleepComponent, WaterComponent, StepsComponent],
+  imports: [FlowerMoodComponent, MoodComponent, SleepComponent, WaterComponent, StepsComponent, CaloriesComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

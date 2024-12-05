@@ -4,6 +4,8 @@
     padding: 0;
     margin: 0;
     box-sizing: inherit;
+
+
 }
 
 
@@ -12,40 +14,10 @@ a {
     text-decoration: none;
 }
 
+
+
 body {
-    font-family: "Namdhinggo", serif;
-    font-weight: 500;
-    font-size: 1.2rem;
-    padding: 10px;
-    font-style: normal;
-    background-color:#F4E5D3;
-}
-
-header {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap:10px;
-    justify-content: space-between;
-    margin: 20px;
-}
-
-.logo #focus{
-    font-size: 1.5rem;
-    color: #007BFF;
-}
-
-.logo #joy{
-    font-size: 1.5rem;
-    color: #B7E0B8;
-}
-
-/* Footer */
-footer {
-    margin-top: 60px;
-    text-align: center;
-    color: #8C744B;
-    font-size: 0.9rem;
-    padding: 10px 0;
-    border-top: 1px solid #AA9166;
+    background: #F2F4F7;
+    background-size: cover;
+    background-attachment: fixed;
 }

@@ -1,33 +1,31 @@
-/* General To-Do Container Styles */
+
 h1 {
-  font-family: 'Playfair Display', serif;
-  color: #D9C2A9; /* Parchment */
+  font-family: 'Poppins', serif;
   font-size: 1.8rem;
   text-align: center;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  color: #fff;
+  flex:100%;
+  border-bottom: 1px solid #fff; 
 }
 .to-do {
-  border: 2px solid #AA9166; /* Gold Border for elegance */
-  border-radius: 15px;
-  margin: 30px auto;
-  padding: 20px;
-  background-color: #2E2A25; /* Dark academia background */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  margin: 40px 0;
+
+  background: linear-gradient(135deg, rgba(110, 68, 255, 0.4), rgba(136, 50, 119, 0.4));
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
-  gap: 20px;
+
   justify-content: center;
   align-items: flex-start;
 }
 
-/* Collection Styles */
 .collection {
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 10px;
-  border-right: 1px solid #AA9166; /* Gold accent divider */
+  border-right: 1px solid #fff; 
   text-align: left;
   gap: 15px;
 }
@@ -37,15 +35,14 @@ h1 {
 }
 
 .collection-title {
-  font-family: 'Playfair Display', serif;
-  color: #D9C2A9; /* Parchment */
+  font-family: "Poppins", serif;
+  color: #fff; 
   font-size: 1.8rem;
   text-align: center;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
 
-/* Add Item Section */
 .add-item {
   display: flex;
   gap: 10px;
@@ -54,11 +51,11 @@ h1 {
 }
 
 .add-item input {
-  font-family: 'Lora', serif;
+  font-family: "Poppins", serif;
   padding: 10px;
-  border: 1px solid #AA9166; /* Subtle gold input border */
+  border: 1px solid #AA9166; 
   border-radius: 5px;
-  background-color: #1F1B16;
+  background: linear-gradient(135deg, #6E44FF, #883277);;
   color: #D9C2A9;
 }
 
@@ -67,8 +64,8 @@ h1 {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #AA9166; /* Gold button */
-  color: #1F1B16; /* Dark text */
+  background-color: #AA9166; 
+  color: #1F1B16; 
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -85,7 +82,7 @@ h1 {
 
 .edit-delete-icons .fa-pencil,
 .edit-delete-icons .fa-trash-can {
-  color: #AA9166; 
+  color: #F3EEEA; 
   font-size: 20px;
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -94,12 +91,12 @@ h1 {
 
 .edit-delete-icons .fa-pencil:hover,
 .edit-delete-icons .fa-trash-can:hover {
-  color: #8C744B; /* Deeper gold */
+  color: #f15044;
   transform: scale(1.1);
 }
 
 .fa-circle-plus {
-  color: #AA9166;
+  color: #F3EEEA;
   font-size: 40px;
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -107,30 +104,44 @@ h1 {
 
 .fa-circle-plus:hover {
   transform: scale(1.2);
-  color: #8C744B;
+  color: #724066;
 }
 
+.not-logged-in {
+  font-family: "Poppins", serif;
+  padding: 10px;
+  text-align: center;
+}
+.not-logged-in a{
+ background-color: #7A3CC1;
+ color: #fff;
+ padding: 5px;
+ border-radius: 10px;
+ 
+
+}
 
 li {
   display: flex;
+  font-family: "Poppins", serif;
+  font-size: 1rem;
   list-style: none;
   justify-content: space-between;
-  padding: 15px;
+  align-items: center;
+  padding: 10px;
   margin: 5px 0;
-  background-color: #1F1B16;
-  color: #D9C2A9;
-  border: 1px solid #AA9166;
+
+  color: #fff;
   border-radius: 10px;
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 li:hover {
   transform: scale(1.02);
-  background-color: #2E2A25;
+  background-color: #926C89;
 }
 
-/* From Uiverse.io by boryanakrasteva */ 
-/* Customize the label (the checkbox-btn) */
+
 .checkbox-btn {
   display: block;
   position: relative;
@@ -144,7 +155,7 @@ li:hover {
 
 }
 
-/* Hide the browser's default checkbox */
+
 .checkbox-btn input {
   position: absolute;
   opacity: 0;
@@ -157,21 +168,21 @@ li:hover {
   cursor: pointer;
   font-size: 14px;
 }
-/* Create a custom checkbox */
+
 .checkmark {
   position: absolute;
   top: 0;
   left: 0;
   height: 20px;
   width: 20px;
-  border: 2.5px solid #AA9166; 
+  border: 2.5px solid #F3EEEA; 
   transition: .2s linear;
 }
 .checkbox-btn input:checked ~ .checkmark {
   background-color: transparent;
 }
 
-/* Create the checkmark/indicator (hidden when not checked) */
+
 .checkmark:after {
   content: "";
   position: absolute;
@@ -181,14 +192,14 @@ li:hover {
   top: 40%;
   width: 10px;
   height: 14px;
-  border: 2px solid #0ea021;
-  filter: drop-shadow(0px 0px 10px #0ea021);
+  border: 2px solid #007185;
+  filter: drop-shadow(0px 0px 10px #007185);
   border-width: 0 2.5px 2.5px 0;
   transition: .2s linear;
   transform: translate(-50%, -50%) rotate(-90deg) scale(0.2);
 }
 
-/* Show the checkmark when checked */
+
 .checkbox-btn input:checked ~ .checkmark:after {
   visibility: visible;
   opacity: 1;
