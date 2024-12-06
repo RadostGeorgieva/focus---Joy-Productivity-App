@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { BehaviorSubject, Observable, from } from 'rxjs';
-import { catchError, switchMap} from 'rxjs/operators'; // Make sure this is imported
+import { catchError, switchMap } from 'rxjs/operators'; // Make sure this is imported
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
@@ -21,23 +21,23 @@ export class UserService {
   ) { }
 
   // Register user
-  registerUser(user: { email: string, password: string}): Observable<any> {
+  registerUser(user: { email: string, password: string }): Observable<any> {
     return from(this.afAuth.createUserWithEmailAndPassword(user.email, user.password)).pipe(
       catchError((error) => {
         throw error;
       }),
       switchMap(() => this.afAuth.currentUser),
-    switchMap((user) => {
-      if (user) {
-       
-        this.router.navigate(['/home']); 
-      }
-      return [];
-    })
-  );
-}
+      switchMap((user) => {
+        if (user) {
+
+          this.router.navigate(['/home']);
+        }
+        return [];
+      })
+    );
+  }
   // Login user with email and password
-  loginUser(user: { email: string, password: string}): Observable<any> {
+  loginUser(user: { email: string, password: string }): Observable<any> {
     return from(this.afAuth.signInWithEmailAndPassword(user.email, user.password)).pipe(
       catchError((error) => {
         throw error;
@@ -45,11 +45,12 @@ export class UserService {
     );
   }
 
-  // Logout user
-  logoutUser(): Observable<any> {
-    return from(this.afAuth.signOut());
+  // Log out the user
+  logout(): void {
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['/home']); 
+    });
   }
-
   // Delete user from Firestore
   deleteUser(userId: string): Observable<any> {
     return from(this.firestore.collection('users').doc(userId).delete());
@@ -70,7 +71,7 @@ export class UserService {
   getCurrentUserId(): Observable<string | null> {
     return this.afAuth.authState.pipe(
       switchMap((user) => {
-        return user ? of(user.uid) : of(null); 
+        return user ? of(user.uid) : of(null);
       })
     );
   }
@@ -81,4 +82,17 @@ export class UserService {
       this.firestore.collection(this.usersCollection).doc(userId).update(updates)
     );
   }
+
+
+  isLoggedIn(): Observable<boolean> {
+    return this.afAuth.authState.pipe(
+      switchMap((user) => of(!!user))
+    );
+  }
+
+
+  getCurrentUser(): Observable<any> {
+    return this.afAuth.authState;
+  }
+
 }

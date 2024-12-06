@@ -3,6 +3,7 @@ import { FirebaseService } from './firebase.service';
 import { UserService } from './user.service';
 import { from, Observable, of } from 'rxjs';
 import { switchMap, take, map } from 'rxjs/operators';
+import { StepsData } from '../models/stepsData.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class StepsService {
     return from(this.userService.getCurrentUserId());
   }
 
-  async addStepsData(StepsData: { date: Date, loggedSteps: number, goalSteps:number }): Promise<void> {
+  async addStepsData(StepsData: StepsData): Promise<void> {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid)

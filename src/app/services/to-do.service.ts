@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { ToDoItem, ToDoList } from '../models/to-do.model';
+import { Observable, BehaviorSubject,from } from 'rxjs';
+import { ToDoList } from '../models/to-do.model';
 import { FirebaseService } from './firebase.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,16 @@ import { FirebaseService } from './firebase.service';
 export class ToDoService {
   private collectionName = 'to-do-lists';
   private toDoListSubject = new BehaviorSubject<ToDoList[]>([]);
+  private uid: string | null = null;
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService,
+              private userService: UserService,
+  ) {}
 
+
+  getUID(): Observable<string | null> {
+    return from(this.userService.getCurrentUserId());
+  }
 
   getCollectionData():Observable<ToDoList[]> {
     return this.firebaseService.listenToToDoCollection(this.collectionName); 
@@ -26,7 +34,7 @@ export class ToDoService {
   }
 
   //adding to item in  to-do list
-  async addItemToList(docId: string, toDoItem: string): Promise<void> {
+  async addItemToList(docId: string, toDoItem: ToDoList): Promise<void> {
     return this.firebaseService.addItemToList(this.collectionName,docId, toDoItem)
   }
   //adding to-do list

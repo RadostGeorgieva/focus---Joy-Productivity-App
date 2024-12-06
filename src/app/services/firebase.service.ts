@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { query, where, DocumentReference,arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
+import { query, where, DocumentReference, arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
 import { environment } from '../../environments/environment';
-import { ToDoItem, ToDoList } from '../models/to-do.model';
 import { Observable, from, BehaviorSubject } from 'rxjs';
+import { ToDoLoggedIn } from '../models/to-do.model';
+import { CaloriesData } from '../models/calories-data.model';
+import { StepsData } from '../models/stepsData.model';
+import { WaterData } from '../models/waterData.model';
+import { SleepData } from '../models/sleep-data.model';
+import { ToDoList } from '../models/to-do.model';
 
-
+type Item = CaloriesData | ToDoLoggedIn | StepsData | WaterData | SleepData;
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +18,14 @@ import { Observable, from, BehaviorSubject } from 'rxjs';
 export class FirebaseService {
   private db;
 
-
   constructor() {
     const app = initializeApp(environment.firebase);
     this.db = getFirestore(app);
+  }
+
+  // Type Guard to check for 'id' in data
+  private hasId(data: any): data is { id: string } {
+    return (data as { id: string }).id !== undefined;
   }
 
   //ONLY FOR TODO!
@@ -38,7 +47,7 @@ export class FirebaseService {
         else {
           return null
         }
-      })
+      });
 
       collectionSubject.next(data);
     });
@@ -48,6 +57,7 @@ export class FirebaseService {
 
   listenToCollection(collectionName: string, uid: string | null, internalCollection: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
+
     if (uid) {
       const userRef = doc(this.db, collectionName, uid);
       const otherCollectionRef = collection(userRef, internalCollection);
@@ -58,63 +68,83 @@ export class FirebaseService {
             id: doc.id,
             data: docData,
           };
-        })
+        });
 
         collectionSubject.next(data);
       });
     }
+
     return collectionSubject.asObservable();
   }
 
-  async addDocument(collectionName: string, userId: string, data: any, trackerName: string) {
+  async addDocument(collectionName: string, userId: string, data: Item, trackerName: string) {
     try {
-
       const innerCollectionDataRef = collection(this.db, collectionName, userId, trackerName);
-      const now = new Date();
-      now.setHours(now.getHours() + 2);
-      const documentId = `${trackerName}_${now.toISOString()}`;
-      const dateToCheck = data.date;
-      dateToCheck.setHours(0, 0, 0, 0);
+      let q: any;
+      let docId: string;
 
-      const q = query(innerCollectionDataRef, where("date", "==", dateToCheck));
-      console.log(dateToCheck);
-      
+      const hasTitle = (data: any): data is ToDoLoggedIn => {
+        return (data as ToDoLoggedIn).title !== undefined;
+      };
+
+      const hasDate = (data: any): data is { date: Date } => {
+        return (data as { date: Date }).date !== undefined;
+      };
+
+      if (trackerName === "ToDoListsData" && hasTitle(data)) {
+        q = query(innerCollectionDataRef, where("title", "==", data.title));
+        console.log("Query title:", data.title);
+      } else if (hasDate(data)) {
+        const now = new Date();
+        now.setHours(now.getHours() + 2);
+        const dateToCheck = data.date;
+        dateToCheck.setHours(0, 0, 0, 0);
+        q = query(innerCollectionDataRef, where("date", "==", dateToCheck));
+        console.log("Query date:", dateToCheck);
+      } else {
+        throw new Error('Data does not contain title or date for query');
+      }
+
       const querySnapshot = await getDocs(q);
-      console.log("query:", querySnapshot);
+      console.log("Query snapshot:", querySnapshot);
+
       if (!querySnapshot.empty) {
-       
         querySnapshot.forEach(async (docSnapshot) => {
           const docId = docSnapshot.id; 
-          const existingData = docSnapshot.data(); 
-  
-          const mergedData = {
-            ...existingData,
-            ...data, 
-          };
-          console.log("new data:", data);
-          console.log("existing data:", existingData);
-          console.log("merged data:", mergedData);
-          
-          await setDoc(doc(innerCollectionDataRef, docId), mergedData);
-          console.log("Document updated with merged data:", mergedData);
+          console.log("Document ID:", docId);
+
+          const existingData = docSnapshot.data();
+          console.log("existingData:", existingData);
+
+          if (existingData && typeof existingData === 'object' && data && typeof data === 'object') {
+
+            const mergedData = { ...existingData, ...data };
+            delete mergedData.id; 
+
+            await setDoc(doc(innerCollectionDataRef, docId), mergedData);
+            console.log("Document updated with merged data:", mergedData);
+          } else {
+            console.error("Failed to merge non-object data:", { existingData, data });
+          }
         });
       } else {
-        
         const now = new Date();
         now.setHours(now.getHours() + 2);
         const documentId = `${trackerName}_${now.toISOString()}`;
-  
-        await setDoc(doc(innerCollectionDataRef, documentId), {
-          ...data,
-        });
-        console.log("New document added successfully:", data);
+
+        if (data && typeof data === 'object') {
+          await setDoc(doc(innerCollectionDataRef, documentId), data);
+          console.log("New document added successfully:", data);
+        } else {
+          console.error("Data is not an object:", data);
+        }
       }
     } catch (error) {
       console.error("Error adding or merging document:", error);
     }
   }
 
-  async addItemToList(collectionName: string, docId: string, item: any): Promise<void> {
+  async addItemToList(collectionName: string, docId: string, item: ToDoList): Promise<void> {
     try {
       console.log('Adding item:', { collectionName, docId, item });
       const documentRef = doc(this.db, collectionName, docId);
@@ -128,25 +158,20 @@ export class FirebaseService {
     }
   }
 
-
-  async updateDocument(collectionName: string,docId: string,index: string | number,updatedItem: any,innerCollection?: string
+  async updateDocument(collectionName: string, docId: string, index: string | number, updatedItem: any, innerCollection?: string
   ): Promise<void> {
     try {
-     
       let documentRef: DocumentReference;
-  
-      if (innerCollection) {
 
+      if (innerCollection) {
         documentRef = doc(this.db, collectionName, docId, innerCollection, `${index}`);
       } else {
-       
         documentRef = doc(this.db, collectionName, docId);
         console.log(documentRef);
       }
 
-
       const currentDoc = await getDoc(documentRef);
-  
+
       if (!currentDoc.exists()) {
         console.error("Document does not exist!");
         return;
@@ -154,14 +179,13 @@ export class FirebaseService {
         const currentData = currentDoc.data();
         console.log(currentData);
 
-      await setDoc(documentRef, updatedItem);
-      console.log("Document updated successfully.");
+        await setDoc(documentRef, updatedItem);
+        console.log("Document updated successfully.");
+      }
+    } catch (error) {
+      console.error("Error updating document:", error);
     }
-  } catch (error) {
-    console.error("Error updating document:", error);
   }
-}
-
 
   async deleteDocument(collectionName: string, docId: string) {
     try {
@@ -173,11 +197,9 @@ export class FirebaseService {
     }
   }
 
-
   async deleteToDoItem(collectionName: string, docId: string, itemIndex: number): Promise<void> {
     try {
       const documentRef = doc(this.db, collectionName, docId);
-
 
       const currentDoc = await getDoc(documentRef);
 
@@ -185,7 +207,6 @@ export class FirebaseService {
         console.error('Document does not exist!');
         return;
       }
-
 
       const currentData = currentDoc.data();
       const items = currentData['items'] || [];
@@ -195,9 +216,7 @@ export class FirebaseService {
         return;
       }
 
-
       items.splice(itemIndex, 1);
-
 
       await updateDoc(documentRef, { items });
       console.log(`Item at index ${itemIndex} deleted successfully`);

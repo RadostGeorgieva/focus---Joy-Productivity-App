@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToDoService } from '../services/to-do.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ToDoItem, ToDoList } from '../models/to-do.model';
+import { UserService } from '../services/user.service';
+import { ToDoList } from '../models/to-do.model';
 
 
 @Component({
@@ -13,17 +14,22 @@ import { ToDoItem, ToDoList } from '../models/to-do.model';
   styleUrl: './to-do.component.css'
 })
 export class ToDoComponent implements OnInit {
+
   toDoLists: any[] = []
   editedValue:string = "";
   editingState: { [key: string]: boolean } = {};
 
-  constructor(private toDoService: ToDoService) { }
+  constructor(private toDoService: ToDoService,
+              private userService: UserService
+              
+  ) { }
 
   ngOnInit(): void {
     this.toDoService.getCollectionData().subscribe((data) => {
       this.toDoLists = data
     });
     this.toDoService.fetchData();
+  
   }
   //adding new items
   handleAddItem(list: {
@@ -44,7 +50,7 @@ export class ToDoComponent implements OnInit {
       console.log(item)
       alert("Item cannot be empty!")
     } else{
-    this.toDoService.addItemToList(list.id, item)
+    this.toDoService.addItemToList(list.id, list)
     list.inputValue = '';
     list.isAdding = !list.isAdding;
   }

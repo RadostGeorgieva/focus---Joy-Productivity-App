@@ -1,58 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { HomePageComponent } from './home-page/home-page.component';
 import { FirebaseService } from './services/firebase.service';
-import { DocumentData } from 'firebase/firestore';
-import { CommonModule } from '@angular/common';
-import { ToDoComponent } from './to-do/to-do.component';
-import { ToDoItem, ToDoList } from './models/to-do.model';
+import { ToDoList } from './models/to-do.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { ToDoService } from './services/to-do.service';  // Import your ToDoItem model
-import { SleepService } from './services/sleep-data.service';
+import { UserService } from './services/user.service';
+import { TaskModalComponent } from './productivity-hub/task-modal/task-modal.component';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule],
+  imports: [TaskModalComponent, RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'focusAndJoy';
-  data: ToDoList[] = [];
-  toDoLists: ToDoList[] = [];
   isLoggedIn: boolean = false;
-
-  username: string = "Joy"
+  username: string = "Joy";
   isDropdownVisible: boolean = false;
 
+
+  private clickListener!: (event: MouseEvent) => void;
 
   constructor(
     private firebaseService: FirebaseService,
     private afAuth: AngularFireAuth,
+    private userService: UserService,
     private router: Router
-  ) { }
+    
+  ) {}
 
   ngOnInit(): void {
-    this.firebaseService.listenToToDoCollection('to-do-lists').subscribe((data) => {
-      this.toDoLists = data;
-      window.addEventListener('click', (event) => this.closeDropdown(event));
+    this.clickListener = (event: MouseEvent) => this.closeDropdown(event);
+    window.addEventListener('click', this.clickListener);
+
+    this.userService.getCurrentUser().subscribe(user => {
+      this.isLoggedIn = !!user;  
     });
 
-    this.afAuth.authState.subscribe(user => {
-      this.isLoggedIn = !!user;})
   }
-  
+
   logout(): void {
-    this.afAuth.signOut().then(() => {
-      this.router.navigate(['/home']);
-    }).catch(error => {
-      console.error('Logout error:', error);
-    });
+    this.userService.logout();  
+    this.isLoggedIn = false; 
   }
-
-
   toggleDropdown(): void {
     this.isDropdownVisible = !this.isDropdownVisible;
   }
@@ -64,7 +57,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {
-    window.removeEventListener('click', (event) => this.closeDropdown(event));
+  ngOnDestroy(): void {
+    window.removeEventListener('click', this.clickListener);
   }
 }

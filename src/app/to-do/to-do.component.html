@@ -15,7 +15,6 @@
             }@else {
             <li>
                 <label class="checkbox-btn">
-
                     <input id="checkbox" type="checkbox">
                     <span class="checkmark"></span>
                     <span class="item">{{item}}</span>
@@ -29,10 +28,9 @@
             }
         </ul>
         <div class="add-item">
-
             @if(list.isAdding) {
                 <input type="text" [(ngModel)]="list.inputValue" placeholder="Enter to-do item">
-                <button (click)="addItem(list)" id="add"> Add new item</button>
+                <button (click)="addItem(list)" id="add">Add new item</button>
             } @else {
             <i (click)="handleAddItem(list)" class="fa-solid fa-circle-plus"></i>
             }

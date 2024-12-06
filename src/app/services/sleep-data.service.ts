@@ -9,6 +9,7 @@ import { user } from '@angular/fire/auth';
 import { LoginComponent } from '../user/login/login.component';
 import { Timestamp } from '@angular/fire/firestore';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +24,7 @@ export class SleepService {
   ) {
   }
 
-  async editSleepData(sleepData: { date: Date, dreams: string, startTime: number, endTime: number, sleepQuality: number}, id:string): Promise<void> {
+  async editSleepData(sleepData: SleepData, id:string): Promise<void> {
     let uid = await firstValueFrom(this.getUID());
     if (uid) {
 
@@ -44,7 +45,7 @@ export class SleepService {
     }
   }
 
-  async addSleepData(sleepData: { date: Date, dreams: string, startTime: number, endTime: number, sleepQuality: number}): Promise<void> {
+  async addSleepData(sleepData: SleepData): Promise<void> {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid)
