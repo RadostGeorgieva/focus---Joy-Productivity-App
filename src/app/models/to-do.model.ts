@@ -11,10 +11,11 @@ export interface ToDoLoggedIn {
     title: string,
     color: string, // Hex color for identification
     tasks: Task[],
-    category: 'daily' | 'weekly' | 'monthly';
+
 }
 
 export interface Task {
+    category: 'daily' | 'weekly' | 'monthly';
     id?: string; 
     title: string;
     completed: boolean;

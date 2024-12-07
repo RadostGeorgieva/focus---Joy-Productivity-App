@@ -57,9 +57,6 @@ export class StepsComponent implements OnInit {
             if (matchingData) {
               day.loggedSteps = matchingData.data.loggedSteps;
               day.goalSteps = matchingData.data.goalSteps
-
-              console.log(matchingData.data.loggedSteps);
-              console.log(matchingData.data.goalSteps);
             }
           }
         });

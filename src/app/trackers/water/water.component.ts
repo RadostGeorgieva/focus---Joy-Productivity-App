@@ -57,9 +57,9 @@ export class WaterComponent implements OnInit {
             if (matchingData) {
               day.loggedWater = matchingData.data.loggedWater;
               day.goalWater = matchingData.data.goalWater
+              console.log(matchingData);
+              
 
-              console.log(matchingData.data.loggedWater);
-              console.log(matchingData.data.goalWater);
             }
           }
         });
@@ -100,6 +100,8 @@ export class WaterComponent implements OnInit {
   }
 
   addWater(waterData: { date: Date, loggedWater: number, goalWater: number }) {
+    console.log("addWater from waterComponent");
+    
     this.waterService.addWaterData(waterData)
   }
 

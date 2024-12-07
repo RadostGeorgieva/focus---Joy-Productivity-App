@@ -9,6 +9,8 @@ import { StepsData } from '../models/stepsData.model';
 import { WaterData } from '../models/waterData.model';
 import { SleepData } from '../models/sleep-data.model';
 import { ToDoList } from '../models/to-do.model';
+import { UserService } from './user.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 type Item = CaloriesData | ToDoLoggedIn | StepsData | WaterData | SleepData;
 
@@ -18,7 +20,8 @@ type Item = CaloriesData | ToDoLoggedIn | StepsData | WaterData | SleepData;
 export class FirebaseService {
   private db;
 
-  constructor() {
+  constructor(private afAuth: AngularFireAuth,
+    private userService: UserService,) {
     const app = initializeApp(environment.firebase);
     this.db = getFirestore(app);
   }
@@ -76,74 +79,116 @@ export class FirebaseService {
 
     return collectionSubject.asObservable();
   }
+  // async addWaterData(userId: string, waterData: { date: Date; loggedWater: number; goalWater: number }): Promise<void> {
+  //   console.log("Adding water data for user:", userId);
+    
+  //   try {
+  //     let id:string = this.getUID;
+  //     const dateWithoutTime = new Date(waterData.date.setHours(0, 0, 0, 0));
+  //     const dateString = dateWithoutTime.toISOString().split('T')[0];
+  //     const documentId = `${id}_${dateString}`;
+    
+  //     const waterDataRef = doc(this.db, 'UsersData', id, 'WaterData', documentId); 
+    
+  //     const currentDoc = await getDoc(waterDataRef);
+    
+  //     // Create the data for Firestore (don't mutate the original waterData)
+  //     const firestoreData = {
+  //       loggedWater: waterData.loggedWater,
+  //       goalWater: waterData.goalWater,
+  //     };
+    
+  //     if (currentDoc.exists()) {
+  //       // If document exists, update it with new data.
+  //       await setDoc(waterDataRef, firestoreData, { merge: true });
+    
+  //       console.log("Water data updated successfully:", waterData);
+  //     } else {
+  //       // If document doesn't exist, create a new one.
+  //       await setDoc(waterDataRef, {
+  //         date: dateWithoutTime,
+  //         ...firestoreData,
+  //       });
+  //       console.log("Water data added successfully:", waterData);
+  //     }
+    
+  //     // Now reset the original waterData object
+  //     //waterData.loggedWater = 0;
+  //     waterData.goalWater = 0;
+  //     console.log('Cleared water data after saving.');
+  //   } catch (error) {
+  //     console.error("Error adding water data:", error);
+  //   }
+  // }
+  
 
-  async addDocument(collectionName: string, userId: string, data: Item, trackerName: string) {
-    try {
-      const innerCollectionDataRef = collection(this.db, collectionName, userId, trackerName);
-      let q: any;
-      let docId: string;
+  addDocument(collectionName: string, userId: string, data: Item, trackerName: string): Promise<void> {
 
-      const hasTitle = (data: any): data is ToDoLoggedIn => {
-        return (data as ToDoLoggedIn).title !== undefined;
-      };
-
-      const hasDate = (data: any): data is { date: Date } => {
-        return (data as { date: Date }).date !== undefined;
-      };
-
-      if (trackerName === "ToDoListsData" && hasTitle(data)) {
-        q = query(innerCollectionDataRef, where("title", "==", data.title));
-        console.log("Query title:", data.title);
-      } else if (hasDate(data)) {
-        const now = new Date();
-        now.setHours(now.getHours() + 2);
-        const dateToCheck = data.date;
-        dateToCheck.setHours(0, 0, 0, 0);
-        q = query(innerCollectionDataRef, where("date", "==", dateToCheck));
-        console.log("Query date:", dateToCheck);
-      } else {
-        throw new Error('Data does not contain title or date for query');
-      }
-
-      const querySnapshot = await getDocs(q);
-      console.log("Query snapshot:", querySnapshot);
-
-      if (!querySnapshot.empty) {
-        querySnapshot.forEach(async (docSnapshot) => {
-          const docId = docSnapshot.id; 
-          console.log("Document ID:", docId);
-
-          const existingData = docSnapshot.data();
-          console.log("existingData:", existingData);
-
-          if (existingData && typeof existingData === 'object' && data && typeof data === 'object') {
-
-            const mergedData = { ...existingData, ...data };
-            delete mergedData.id; 
-
-            await setDoc(doc(innerCollectionDataRef, docId), mergedData);
-            console.log("Document updated with merged data:", mergedData);
-          } else {
-            console.error("Failed to merge non-object data:", { existingData, data });
+    return new Promise<void>((resolve, reject) => {
+      this.afAuth.currentUser
+        .then((currentUser) => {
+          if (!currentUser) {
+            console.error('User not authenticated!');
+            reject('User not authenticated!');
+            return;
           }
+
+          if (currentUser.uid !== userId) {
+            console.error('Unauthorized attempt to add data to another user’s document.');
+            reject('Unauthorized access!');
+            return;
+          }
+
+          if (!userId) {
+            console.error('No user is logged in, cannot proceed with adding data');
+            reject('No user logged in');
+            return;
+          }
+
+          console.log('User ID:', userId);
+          const innerCollectionDataRef = collection(this.db, collectionName, userId, trackerName);
+
+          // Generate a unique ID for the document instead of using userId
+          const docRef = doc(innerCollectionDataRef); // This will automatically generate a unique ID for the document
+
+          getDoc(docRef)
+            .then((docSnapshot) => {
+              if (docSnapshot.exists()) {
+                const existingData = docSnapshot.data();
+                const mergedData = { ...existingData, ...data };
+
+                setDoc(docRef, mergedData)
+                  .then(() => {
+                    console.log("Document updated with merged data (via custom ID):", mergedData);
+                    resolve(); 
+                  })
+                  .catch((error) => {
+                    console.error("Error updating document:", error);
+                    reject(error); 
+                  });
+              } else {
+                setDoc(docRef, data)
+                  .then(() => {
+                    console.log("New document added successfully:", data);
+                    resolve(); 
+                  })
+                  .catch((error) => {
+                    console.error("Error adding document:", error);
+                    reject(error); 
+                  });
+              }
+            })
+            .catch((error) => {
+              console.error("Error getting document:", error);
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          console.error("Error getting current user:", error);
+          reject(error); 
         });
-      } else {
-        const now = new Date();
-        now.setHours(now.getHours() + 2);
-        const documentId = `${trackerName}_${now.toISOString()}`;
-
-        if (data && typeof data === 'object') {
-          await setDoc(doc(innerCollectionDataRef, documentId), data);
-          console.log("New document added successfully:", data);
-        } else {
-          console.error("Data is not an object:", data);
-        }
-      }
-    } catch (error) {
-      console.error("Error adding or merging document:", error);
-    }
+    });
   }
-
   async addItemToList(collectionName: string, docId: string, item: ToDoList): Promise<void> {
     try {
       console.log('Adding item:', { collectionName, docId, item });
@@ -188,14 +233,37 @@ export class FirebaseService {
   }
 
   async deleteDocument(collectionName: string, docId: string) {
+
     try {
       const documentRef = doc(this.db, collectionName, docId);
+      console.log(collectionName);
+
       await deleteDoc(documentRef);
       console.log('Document deleted successfully');
     } catch (error) {
       console.error('Error deleting document:', error);
     }
   }
+  async delete(collectionName: string, userId: string, docId: string, trackerName: string) {
+
+    try {
+      let documentRef: DocumentReference;
+
+      if (trackerName) {
+        documentRef = doc(this.db, collectionName, userId, trackerName, docId);
+      } else {
+        documentRef = doc(this.db, collectionName, docId);
+      }
+      console.log(documentRef);
+
+      await deleteDoc(documentRef);
+
+    } catch (error) {
+      console.error('Error deleting item:', error);
+
+    }
+  }
+
 
   async deleteToDoItem(collectionName: string, docId: string, itemIndex: number): Promise<void> {
     try {
@@ -224,4 +292,8 @@ export class FirebaseService {
       console.error('Error deleting item:', error);
     }
   }
+  getUID(): Observable<string | null> {
+    return from(this.userService.getCurrentUserId());
+  }
+
 }

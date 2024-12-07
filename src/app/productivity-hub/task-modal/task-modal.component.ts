@@ -11,27 +11,35 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './task-modal.component.css',
 })
 export class TaskModalComponent {
-  @Input() selectedTaskList: ToDoLoggedIn | null = null;  
-  @Output() taskAdded = new EventEmitter<Task>();  
+  @Input() selectedTaskList: ToDoLoggedIn | null = null;
+  @Input() taskToEdit: Task | null = null;
+  @Output() taskAdded = new EventEmitter<Task>();
   @Output() close = new EventEmitter<void>();
 
-  task: Task = { title: '', completed: false };
+  task: Task = { title: '', completed: false, category: 'daily' };
 
- ngOnChanges() {
-  console.log('selectedTaskList:', this.selectedTaskList);
-}
+  ngOnInit() {
+    if (this.taskToEdit) {
+      this.task = { ...this.taskToEdit };
+    }
+  }
+  
   onSubmit() {
     if (this.selectedTaskList) {
-      console.log('Form submitted:', this.task);
-      this.taskAdded.emit(this.task); 
-      this.task = { title: '', completed: false }; 
-      this.onClose(); 
+      this.taskAdded.emit(this.task);
+      this.task = { title: '', completed: false, category: 'daily' };
+      this.onClose();
+    }
+  }
+  deleteList() {
+
+    if (this.selectedTaskList) {
+      console.log(`Deleting list: ${this.selectedTaskList.title}`);
+      this.onClose();
     }
   }
 
-
   onClose() {
-    console.log('Modal closed');
     this.close.emit();
   }
 }

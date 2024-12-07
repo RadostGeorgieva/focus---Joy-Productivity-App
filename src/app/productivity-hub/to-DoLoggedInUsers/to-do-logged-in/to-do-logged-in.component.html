@@ -2,16 +2,26 @@
   <div class="todo-list-section">
     <h2>To Do</h2>
 
+    <button class="add-list-btn" (click)="openListTaskModal()"><i class="fa-solid fa-plus"></i></button>
 
     <div class="todo-lists">
       @for (list of toDoLists; track list.title) {
-      <div class="todo-list">
+      <div [ngStyle]="{'background-color': list.color}" class="todo-list">
         <h3>{{ list.title }}</h3>
+        <div (click)="openListTaskModal(list)" class="edit-dots"><i class="fa-solid fa-ellipsis-vertical"></i></div>
         @for (task of list.tasks; track $index) {
-        <div class="task-item">
-          <input type="checkbox" [(ngModel)]="task.completed" />
-          <span [ngClass]="{ 'completed': task.completed }">{{ task.title }}</span>
-          <button class="remove-task-btn" (click)="removeTask(list)">X</button>
+          <div class="task-item">
+            <div class="custom-checkbox">
+              <input type="checkbox" [(ngModel)]="task.completed" id="checkbox-{{task.title}}" />
+              <label for="checkbox-{{task.title}}" class="checkmark"></label>
+            </div>
+            <span [ngClass]="{'completed': task.completed}">{{ task.title }}</span>
+          <button class="edit-task-btn"(click)="openTaskModal(list, task)">
+            <i class="fa fa-pencil-alt"></i>
+          </button>
+          <button class="remove-task-btn" (click)="removeTask(list, $index)">
+            <i class="fa fa-trash"></i>
+          </button>
         </div>
         }
         <button class="add-task-btn" (click)="openTaskModal(list)">Add Task</button>
@@ -21,9 +31,19 @@
   </div>
 </div>
 
-<!-- Modal for Adding or Editing a Task -->
 @if(isModalOpen) {
 <div class="modal-wrapper">
-  <app-task-modal (taskAdded)="addTask($event)" (close)="closeModal()"  [selectedTaskList]="selectedTaskList" />
+  <app-task-modal (taskAdded)="addTask($event)" (close)="closeModal()"  [selectedTaskList]="selectedTaskList"   [taskToEdit]="taskToEdit" />
 </div>
 }
+
+@if(isListModalOpen) {
+  <div class="modal-wrapper">
+    <app-list-modal 
+    [listToEdit]="listToEdit"
+    (listUpdated)="handleListUpdated($event)"
+    (listCreated)="createNewList($event)"
+    (listDeleted)="onDeleteList($event)"
+    (close)="closeListModal()"/>
+  </div>
+  }

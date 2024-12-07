@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseService } from './firebase.service';
 import { UserService } from './user.service';
 import { from, Observable, of } from 'rxjs';
-import { switchMap, take, map } from 'rxjs/operators';
+import { switchMap, take, map,tap } from 'rxjs/operators';
 import { StepsData } from '../models/stepsData.model';
 
 @Injectable({
@@ -19,14 +19,18 @@ export class StepsService {
   }
 
   getUID(): Observable<string | null> {
-    return from(this.userService.getCurrentUserId());
+    return this.userService.getCurrentUserId().pipe(
+      tap(uid => console.log("UID after logout:", uid))
+    );
   }
 
   async addStepsData(StepsData: StepsData): Promise<void> {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
-        if (uid)
+        if (uid){
+          console.log("addStepsData");
           this.firebaseService.addDocument("UsersData", uid, StepsData, this.collectionName)
+        }
         return;
       },
     });

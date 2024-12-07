@@ -1,13 +1,9 @@
-<!-- productivity-hub.component.html -->
+
 <div class="productivity-hub-container">
-    <!-- Main To-Do Section -->
     <div class="toDo-section">
-        <h3>To Do</h3>
         <app-to-do-logged-in />
       </div>
 
-  
-    <!-- Sidebar for Calendar and Reminders (Collapsible) -->
     <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
       <button class="toggle-sidebar-btn" (click)="toggleSidebar()">☰</button>
   

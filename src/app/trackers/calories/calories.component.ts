@@ -57,9 +57,6 @@ export class CaloriesComponent implements OnInit {
             if (matchingData) {
               day.loggedCalories = matchingData.data.loggedCalories;
               day.goalCalories = matchingData.data.goalCalories
-
-              console.log(matchingData.data.loggedCalories);
-              console.log(matchingData.data.goalCalories);
             }
           }
         });
@@ -100,6 +97,8 @@ export class CaloriesComponent implements OnInit {
   }
 
   addCalories(CaloriesData: { date: Date, loggedCalories: number, goalCalories: number }) {
+   console.log("addCalories");
+   
     this.CaloriesService.addCaloriesData(CaloriesData)
   }
 

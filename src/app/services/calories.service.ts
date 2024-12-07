@@ -22,11 +22,14 @@ export class CaloriesService {
   }
 
   async addCaloriesData(CaloriesData: { date: Date, loggedCalories: number, goalCalories:number }): Promise<void> {
+    console.log("addCalories, calorieService");
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
-        if (uid)
+        if (uid) {
+          console.log("addStepsData")
           this.firebaseService.addDocument("UsersData", uid, CaloriesData, this.collectionName)
         return;
+        }
       },
     });
 
@@ -39,7 +42,7 @@ export class CaloriesService {
         if (uid) {
           return this.firebaseService.listenToCollection("UsersData", uid, this.collectionName);
         } else {
-          console.log('UID not found');
+          console.log('UID not found, user is logged out.');
           return of([]);
         }
       })

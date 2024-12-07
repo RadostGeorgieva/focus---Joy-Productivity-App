@@ -1,0 +1,20 @@
+<div class="modal-wrapper">
+    <div class="modal-content">
+        <div class="close-btn" (click)="closeModal()">X</div>
+      <h3>{{ listToEdit && listToEdit.title ? 'Edit List' : 'Create New List' }}</h3>
+      
+      <label for="list-title">Title:</label>
+      <input id="list-title" type="text" [(ngModel)]="newListTitle" placeholder="Enter list title" />
+      
+      <label for="color-picker">Background Color:</label>
+      <div class="color-picker-container">
+        <input id="color-picker" type="color" [(ngModel)]="selectedColor" />
+      </div>
+      
+      <div class="modal-actions">
+        <button class="save-btn" (click)="saveList()">Save</button>
+        <button class="delete-btn" (click)="deleteList()">Delete List</button>
+      </div>
+    </div>
+  </div>
+  

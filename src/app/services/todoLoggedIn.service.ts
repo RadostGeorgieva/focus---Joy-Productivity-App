@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ToDoLoggedInService {
-  private collectionName = 'ToDoListsData'; // Collection name in Firebase
+  private collectionName = 'ToDoListsData';
   private uid: string | null = null;
 
   constructor(
@@ -24,22 +24,26 @@ export class ToDoLoggedInService {
 
 
   async addToDoList(toDoList: ToDoLoggedIn): Promise<void> {
-    this.userService.getCurrentUserId().subscribe({
+    this.getUID().subscribe({
       next: (uid) => {
         if (uid) {
+          console.log("addToDoList");
+          
           this.firebaseService.addDocument(
             'UsersData',
             uid,
             toDoList,
             this.collectionName
           );
+        } else {
+          console.error('UID not found');
         }
       },
-      error: (err) => console.error('Error fetching user ID:', err),
+      error: (err) => {
+        console.error('Error fetching user ID:', err);
+      }
     });
   }
-
-
   getToDoLists(): Observable<ToDoLoggedIn[]> {
     return this.getUID().pipe(
       switchMap((uid) => {
@@ -52,6 +56,7 @@ export class ToDoLoggedInService {
             map((data) => {
               return data.map(doc => ({
                 ...doc.data,
+                id: doc.id, 
                 tasks: doc.data?.tasks ?? [],
                 category: doc.data?.category || 'daily'
               }));
@@ -65,4 +70,24 @@ export class ToDoLoggedInService {
       })
     );
   }
+  deleteToDoList(listId: string): Observable<void> {
+    return this.getUID().pipe(
+      switchMap((uid) => {
+        if (uid) {
+          return from(
+            this.firebaseService.delete('UsersData',uid, listId, this.collectionName)
+          ).pipe(
+            map(() => {
+              console.log('ToDo list deleted successfully', listId);
+              console.log('client', uid);
+            })
+          );
+        } else {
+          console.log('UID not found');
+          return of(void 0);
+        }
+      })
+    );
+  }
 }
+  

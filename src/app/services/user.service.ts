@@ -44,9 +44,16 @@ export class UserService {
       })
     );
   }
-
+  private clearSessionData(): void {
+    // Clear localStorage and sessionStorage or any other session-related data
+    localStorage.clear(); // or remove specific items if needed
+    sessionStorage.clear();
+    // Optionally, clear any user-specific data if necessary
+    console.log("Session data cleared.");
+  }
   // Log out the user
   logout(): void {
+    this.clearSessionData();
     this.afAuth.signOut().then(() => {
       this.router.navigate(['/home']); 
     });
@@ -71,7 +78,13 @@ export class UserService {
   getCurrentUserId(): Observable<string | null> {
     return this.afAuth.authState.pipe(
       switchMap((user) => {
-        return user ? of(user.uid) : of(null);
+        if (user) {
+          console.log("Logged in user:", user.uid);
+          return of(user.uid);  // Return the updated UID if the user is logged in
+        } else {
+          console.log("No user logged in (authState is null).");
+          return of(null);  // Return null if there's no logged-in user
+        }
       })
     );
   }
