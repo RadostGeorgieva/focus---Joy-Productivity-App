@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductivityHubComponent } from './productivity-hub/productivity-hub.component';
 import { AuthGuard } from './guards/guards/auth.guard';
 import { NoAuthGuard } from './guards/guards/no-auth.guard';
+import { PerformanceComponent } from './performance/performance.component';
 
 
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'trackers', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'productivity', component: ProductivityHubComponent, canActivate: [AuthGuard] },
+  { path: 'performance', component: PerformanceComponent, canActivate: [AuthGuard] },
   { path: 'to-do', component: ToDoComponent, canActivate: [NoAuthGuard] },
   { path: '**', redirectTo: 'home' }, 
 

@@ -1,0 +1,40 @@
+*{
+  font-family: "Poppins", serif;
+}
+.performance-container {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  text-align: center;
+}
+
+.chart-container {
+  background:  linear-gradient(135deg, rgba(110, 68, 255, 0.7), rgba(136, 50, 119, 0.7));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px; 
+  transition: transform 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: scale(1.03); 
+}
+
+h2 {
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+canvas {
+  width: 100%;
+  height: 250px; 
+  max-height: 300px;
+  border-radius: 8px;
+}

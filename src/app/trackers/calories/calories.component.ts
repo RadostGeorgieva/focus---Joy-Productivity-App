@@ -102,5 +102,9 @@ export class CaloriesComponent implements OnInit {
     this.CaloriesService.addCaloriesData(CaloriesData)
   }
 
+  getProgressBarWidth(loggedCalories: number, goalCalories: number): string {
+    return `${Math.min(loggedCalories / goalCalories, 1) * 100}%`;
+  }
+
 }
 

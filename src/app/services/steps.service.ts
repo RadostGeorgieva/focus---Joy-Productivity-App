@@ -29,7 +29,7 @@ export class StepsService {
       next: (uid) => {
         if (uid){
           console.log("addStepsData");
-          this.firebaseService.addDocument("UsersData", uid, StepsData, this.collectionName)
+          this.firebaseService.addOrUpdateInernalData("UsersData", uid, StepsData, this.collectionName)
         }
         return;
       },

@@ -104,6 +104,8 @@ export class WaterComponent implements OnInit {
     
     this.waterService.addWaterData(waterData)
   }
-
+  getProgressBarWidth(loggedWater: number, goalWater: number): string {
+    return `${Math.min(loggedWater / goalWater, 1) * 100}%`;
+  }
 }
 

@@ -99,6 +99,9 @@ export class StepsComponent implements OnInit {
   addSteps(stepsData: { date: Date, loggedSteps: number, goalSteps: number }) {
     this.stepsService.addStepsData(stepsData)
   }
+  getProgressBarWidth(loggedSteps: number, goalSteps: number): string {
+    return `${Math.min(loggedSteps / goalSteps, 1) * 100}%`;
+  }
 
 }
 

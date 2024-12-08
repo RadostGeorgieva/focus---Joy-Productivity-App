@@ -3,10 +3,10 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
 }
-.custom-checkbox input[type="checkbox"] {
-  display: none; /* Hide the default checkbox */
-}
 
+.add-list-btn {
+  visibility:hidden;
+}
 .fa-plus {
 cursor: pointer;
 position: absolute;
@@ -57,7 +57,7 @@ color: #000;
   position: relative;
   margin: 50px auto;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #f7f7f6;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
@@ -94,7 +94,7 @@ color: #000;
 
 .todo-list h3 {
   font-size: 1.5rem;
-  color: #000;
+  color: #FFF;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -125,9 +125,9 @@ color: #000;
   word-break: break-word;
 }
 
-.task-item span.completed {
+.completed {
   text-decoration: line-through;
-  color: #999;
+  color: gray;
 }
 
 .task-item .remove-task-btn {
@@ -211,7 +211,9 @@ app-task-modal {
   max-width: 90%;
 }
 
-/**CHEKBOX**/
+
+
+/**CHECKBOX**/
 /* From Uiverse.io by KhaledMatalkah */ 
 .custom-checkbox {
   display: inline-flex;
@@ -224,13 +226,13 @@ app-task-modal {
 }
 
 .custom-checkbox input[type="checkbox"] {
-  display: none; /* Hide the default checkbox */
+  display: none;
 }
 
 .custom-checkbox .checkmark {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #333;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #FFF;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -241,20 +243,20 @@ app-task-modal {
 }
 
 .custom-checkbox .checkmark::before {
-  content: "\2713"; /* Unicode for checkmark */
+  content: "\2713";
   font-size: 16px;
   color: transparent;
   transition: color 0.3s, transform 0.3s;
 }
 
 .custom-checkbox input[type="checkbox"]:checked + .checkmark {
-  background-color: #333;
-  border-color: #333;
+  background-color: #FFF;
+  border-color: #FFF;
   transform: scale(1.1) rotateZ(360deg) rotateY(360deg);
 }
 
 .custom-checkbox input[type="checkbox"]:checked + .checkmark::before {
-  color: #fff;
+  color: #666;
 }
 
 .custom-checkbox:hover {
@@ -276,10 +278,3 @@ app-task-modal {
 .custom-checkbox input[type="checkbox"]:checked + .checkmark {
   transition: background-color 1.3s, border-color 1.3s, color 1.3s, transform 0.3s;
 }
-
-/* Optional styling for task text when checked */
-.task-item .completed {
-  text-decoration: line-through;
-  color: #999;
-}
-

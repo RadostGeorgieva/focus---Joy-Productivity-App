@@ -26,10 +26,8 @@ export class ToDoLoggedInService {
   async addToDoList(toDoList: ToDoLoggedIn): Promise<void> {
     this.getUID().subscribe({
       next: (uid) => {
-        if (uid) {
-          console.log("addToDoList");
-          
-          this.firebaseService.addDocument(
+        if (uid) {          
+          this.firebaseService.addOrUpdateInernalData(
             'UsersData',
             uid,
             toDoList,

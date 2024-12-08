@@ -13,7 +13,9 @@
       
       <div class="modal-actions">
         <button class="save-btn" (click)="saveList()">Save</button>
-        <button class="delete-btn" (click)="deleteList()">Delete List</button>
+        @if(listToEdit && listToEdit.title) {
+          <button class="delete-btn" (click)="deleteList()">Delete List</button>
+        }
       </div>
     </div>
   </div>

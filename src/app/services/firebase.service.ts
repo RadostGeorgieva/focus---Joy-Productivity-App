@@ -11,6 +11,7 @@ import { SleepData } from '../models/sleep-data.model';
 import { ToDoList } from '../models/to-do.model';
 import { UserService } from './user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { v4 as uuidv4 } from 'uuid';
 
 type Item = CaloriesData | ToDoLoggedIn | StepsData | WaterData | SleepData;
 
@@ -81,27 +82,27 @@ export class FirebaseService {
   }
   // async addWaterData(userId: string, waterData: { date: Date; loggedWater: number; goalWater: number }): Promise<void> {
   //   console.log("Adding water data for user:", userId);
-    
+
   //   try {
   //     let id:string = this.getUID;
   //     const dateWithoutTime = new Date(waterData.date.setHours(0, 0, 0, 0));
   //     const dateString = dateWithoutTime.toISOString().split('T')[0];
   //     const documentId = `${id}_${dateString}`;
-    
+
   //     const waterDataRef = doc(this.db, 'UsersData', id, 'WaterData', documentId); 
-    
+
   //     const currentDoc = await getDoc(waterDataRef);
-    
+
   //     // Create the data for Firestore (don't mutate the original waterData)
   //     const firestoreData = {
   //       loggedWater: waterData.loggedWater,
   //       goalWater: waterData.goalWater,
   //     };
-    
+
   //     if (currentDoc.exists()) {
   //       // If document exists, update it with new data.
   //       await setDoc(waterDataRef, firestoreData, { merge: true });
-    
+
   //       console.log("Water data updated successfully:", waterData);
   //     } else {
   //       // If document doesn't exist, create a new one.
@@ -111,7 +112,7 @@ export class FirebaseService {
   //       });
   //       console.log("Water data added successfully:", waterData);
   //     }
-    
+
   //     // Now reset the original waterData object
   //     //waterData.loggedWater = 0;
   //     waterData.goalWater = 0;
@@ -120,7 +121,61 @@ export class FirebaseService {
   //     console.error("Error adding water data:", error);
   //   }
   // }
-  
+
+  createId(data: Item, trackerName: string) {
+
+    let documentId: string;
+
+    if ('date' in data) {
+
+      const dateWithoutTime = new Date(data.date.setHours(0, 0, 0, 0));
+      const dateString = dateWithoutTime.toISOString().split('T')[0];
+      documentId = `${trackerName}_${dateString}`;
+      return documentId;
+
+    } else if ('tasks' in data && 'title' in data) {
+
+      documentId = `${data.title}_${uuidv4()}`;
+      console.log("ID WITH NUMBER:", documentId);
+
+      return documentId;
+
+    }
+    return;
+
+  }
+  async addOrUpdateInernalData(collectionName: string, userId: string, data: Item, trackerName: string): Promise<void> {
+    try {
+      const documentId = data.id || this.createId(data, trackerName);
+
+      if (!documentId) {
+        throw new Error('Failed to generate documentId');
+      }
+
+      const documentRef = doc(this.db, 'UsersData', userId, trackerName, documentId);
+
+      const currentDoc = await getDoc(documentRef);
+
+
+      if (currentDoc.exists()) {
+        const existingData = currentDoc.data();
+        const mergedData = { ...existingData, ...data };
+
+        await setDoc(documentRef, mergedData)
+        console.log("Document updated with merged data (via custom ID):", mergedData);
+
+      } else {
+        await setDoc(documentRef, data)
+        console.log("New document added successfully:", data);
+      }
+    } catch (error) {
+      console.error("Error updateing data:", error);
+
+    };
+  }
+
+
+
 
   addDocument(collectionName: string, userId: string, data: Item, trackerName: string): Promise<void> {
 
@@ -160,21 +215,21 @@ export class FirebaseService {
                 setDoc(docRef, mergedData)
                   .then(() => {
                     console.log("Document updated with merged data (via custom ID):", mergedData);
-                    resolve(); 
+                    resolve();
                   })
                   .catch((error) => {
                     console.error("Error updating document:", error);
-                    reject(error); 
+                    reject(error);
                   });
               } else {
                 setDoc(docRef, data)
                   .then(() => {
                     console.log("New document added successfully:", data);
-                    resolve(); 
+                    resolve();
                   })
                   .catch((error) => {
                     console.error("Error adding document:", error);
-                    reject(error); 
+                    reject(error);
                   });
               }
             })
@@ -185,7 +240,7 @@ export class FirebaseService {
         })
         .catch((error) => {
           console.error("Error getting current user:", error);
-          reject(error); 
+          reject(error);
         });
     });
   }

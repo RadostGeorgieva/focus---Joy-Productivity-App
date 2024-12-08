@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ToDoLoggedIn, Task } from '../../../models/to-do.model';
 import { ToDoLoggedInService } from '../../../services/todoLoggedIn.service';
 import { ListModalComponent } from '../../list-modal/list-modal.component'
-import { update } from '@angular/fire/database';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-to-do-logged-in',
@@ -41,13 +41,17 @@ export class ToDoLoggedInComponent implements OnInit {
     this.isModalOpen = true;
   }
 
-  openListTaskModal(list?: { title: string, color: string, tasks: any[] }): void {
+  openListTaskModal(list?: ToDoLoggedIn): void {
     if (list) {
       this.listToEdit = { ...list };
     } else {
-      this.listToEdit = { title: '', color: '#FFFFFF', tasks: [] }; 
+      this.listToEdit = { title: '', color: '#FFFFFF', tasks: [] };
     }
     this.isListModalOpen = true;
+  }
+  onTaskCheckboxTogglelist(list: ToDoLoggedIn, task: Task): void {
+    task.completed = !task.completed;
+    this.toDoService.addToDoList(list)
   }
 
 
@@ -63,7 +67,6 @@ export class ToDoLoggedInComponent implements OnInit {
   }
   createNewList(listData: { title: string, color: string }): void {
     const newList = {
-      
       title: listData.title,
       color: listData.color,
       tasks: []
@@ -79,15 +82,23 @@ export class ToDoLoggedInComponent implements OnInit {
   }
 
   addTask(task: Task): void {
+    console.log(task);
     if (this.selectedTaskList) {
-      console.log(this.selectedTaskList);
+
 
       if (this.taskToEdit) {
+        console.log(this.taskToEdit);
+
         const taskIndex = this.selectedTaskList.tasks.findIndex(t => t === this.taskToEdit);
         if (taskIndex !== -1) {
           this.selectedTaskList.tasks[taskIndex] = task;
         }
       } else {
+        console.log(task.id);
+        // Generate a unique ID for the new task if it doesn't exist
+        if (!task.id) {
+          task.id = uuidv4();
+        }
         this.selectedTaskList.tasks.push(task);
       }
 
@@ -98,10 +109,11 @@ export class ToDoLoggedInComponent implements OnInit {
       this.closeModal();
     }
   }
+
   handleListUpdated(updatedList: ToDoLoggedIn): void {
     const index = this.toDoLists.findIndex(list => list.id === updatedList.id);
     console.log(updatedList.id);
-    
+
     if (index !== -1) {
       this.toDoLists[index] = updatedList;
       this.toDoService.addToDoList(updatedList)
@@ -110,6 +122,9 @@ export class ToDoLoggedInComponent implements OnInit {
     } else {
       console.error('List to update not found.');
     }
+  }
+  getTaskIndex(list: any, task: any): number {
+    return list.tasks.findIndex((t: { id: string; }) => t.id === task.id);
   }
 
   removeTask(list: ToDoLoggedIn, taskIndex: number): void {
@@ -121,25 +136,6 @@ export class ToDoLoggedInComponent implements OnInit {
         .catch(err => console.error('Error removing task:', err));
     } else {
       console.error('Invalid task index or list');
-    }
-  }
-  openNewListModal(): void {
-    const newListTitle = prompt("Enter the new list title:");
-
-    if (newListTitle) {
-      const newList: ToDoLoggedIn = {
-        title: newListTitle,
-        color: "#80379E", 
-        tasks: []
-      };
-
-      this.toDoService.addToDoList(newList)
-        .then(() => {
-          console.log("New list added successfully.");
-        })
-        .catch(err => {
-          console.error("Error adding new list:", err);
-        });
     }
   }
 

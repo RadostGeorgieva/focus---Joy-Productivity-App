@@ -18,7 +18,7 @@
                     <div class="progress">
                       <div
                         class="progress-bar"
-                        [style.width]="(day.loggedWater / day.goalWater) * 100 + '%'">
+                        [style.width]="getProgressBarWidth(day.loggedWater, day.goalWater)">
                       </div>
                     </div>
                   </div>
