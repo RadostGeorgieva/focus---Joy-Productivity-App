@@ -8,9 +8,11 @@ export interface ToDoList {
 
 export interface ToDoLoggedIn {
     id?: string,
+    user?:string,
     title: string,
-    color: string, // Hex color for identification
+    color: string,
     tasks: Task[],
+    metadata?: ToDoListMetadata;
 
 }
 
@@ -20,3 +22,16 @@ export interface Task {
     title: string;
     completed: boolean;
   }
+
+  export interface ToDoListMetadata {
+    shared: boolean;
+    likesCount?: number;
+    likedBy?: string[];
+    dislikesCount?: number;
+    comments?: string[];
+  }
+  export interface Comment {
+    user: string;   
+    text: string;  
+    createdAt: Date;
+}

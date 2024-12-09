@@ -2,7 +2,15 @@
     <div class="modal-content">
         <div class="close-btn" (click)="closeModal()">X</div>
       <h3>{{ listToEdit && listToEdit.title ? 'Edit List' : 'Create New List' }}</h3>
-      
+
+      @if (listToEdit && listToEdit.title) {
+        <div class="share-option">
+          <button (click)="toggleShareList()">
+            {{ isShared ? 'Unshare List' : 'Share List' }}
+          </button>
+        </div>
+      }
+   
       <label for="list-title">Title:</label>
       <input id="list-title" type="text" [(ngModel)]="newListTitle" placeholder="Enter list title" />
       
@@ -10,7 +18,8 @@
       <div class="color-picker-container">
         <input id="color-picker" type="color" [(ngModel)]="selectedColor" />
       </div>
-      
+
+    
       <div class="modal-actions">
         <button class="save-btn" (click)="saveList()">Save</button>
         @if(listToEdit && listToEdit.title) {

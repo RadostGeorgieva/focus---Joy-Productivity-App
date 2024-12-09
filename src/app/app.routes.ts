@@ -7,7 +7,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductivityHubComponent } from './productivity-hub/productivity-hub.component';
 import { AuthGuard } from './guards/guards/auth.guard';
 import { NoAuthGuard } from './guards/guards/no-auth.guard';
+import { AuthOrNoAuthGuard } from './guards/guards/AuthOrNoAuthGuard';
 import { PerformanceComponent } from './performance/performance.component';
+import { InspirationComponent } from './inspiration/inspiration.component';
+import { DetailsComponent } from './inspiration/details/details.component';
 
 
 
@@ -20,6 +23,8 @@ export const routes: Routes = [
   { path: 'productivity', component: ProductivityHubComponent, canActivate: [AuthGuard] },
   { path: 'performance', component: PerformanceComponent, canActivate: [AuthGuard] },
   { path: 'to-do', component: ToDoComponent, canActivate: [NoAuthGuard] },
+  { path: 'inspiration', component: InspirationComponent, canActivate: [AuthOrNoAuthGuard]},
+  { path: 'inspiration/:id', component: DetailsComponent },
   { path: '**', redirectTo: 'home' }, 
 
 ];

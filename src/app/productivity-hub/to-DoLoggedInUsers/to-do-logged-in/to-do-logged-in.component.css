@@ -4,9 +4,7 @@ body {
   background-color: #f4f4f9;
 }
 
-.add-list-btn {
-  visibility:hidden;
-}
+
 .fa-plus {
 cursor: pointer;
 position: absolute;

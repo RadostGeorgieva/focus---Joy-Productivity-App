@@ -12,6 +12,7 @@ import { ToDoList } from '../models/to-do.model';
 import { UserService } from './user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { v4 as uuidv4 } from 'uuid';
+import { list } from '@angular/fire/database';
 
 type Item = CaloriesData | ToDoLoggedIn | StepsData | WaterData | SleepData;
 
@@ -59,6 +60,66 @@ export class FirebaseService {
     return collectionSubject.asObservable();
   }
 
+  getSharedCollection(collectionName: string): Observable<any[]> {
+    const collectionSubject = new BehaviorSubject<any[]>([]);
+  
+    const collectionRef = collection(this.db, collectionName);
+    onSnapshot(collectionRef, (querySnapshot) => {
+      const data: any[] = querySnapshot.docs.map(doc => {
+        const docData = doc.data();
+        return {
+          id: doc.id, 
+          data: docData, 
+        };
+      });
+  
+      collectionSubject.next(data);
+    });
+  
+    return collectionSubject.asObservable();
+  }
+  async getSharedDocument(collectionName: string, listId: string): Promise<any> {
+    try {
+
+      const collectionRef = collection(this.db, collectionName);
+      const documentRef = doc(collectionRef, listId);
+  
+      const currentDoc = await getDoc(documentRef);
+  
+      if (currentDoc.exists()) {
+        return currentDoc.data();
+      } else {
+        console.error('No document found with the given ID.');
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  }
+  
+  async postSharedCollection(collectionName: string, internalCollection: string, data: any): Promise<void> {
+  try {
+    const documentId = data.id || this.createId(data, internalCollection);
+    
+    if (!documentId) {
+      throw new Error('Failed to generate documentId');
+    }
+    const collectionRef = collection(this.db, collectionName);
+    const documentRef = doc(collectionRef, documentId);
+    const currentDoc = await getDoc(documentRef);
+
+    if (currentDoc.exists()) {
+      const existingData = currentDoc.data();
+      const mergedData = { ...existingData, ...data };
+      await setDoc(documentRef, mergedData);
+    } else {
+      await setDoc(documentRef, data);
+    }
+  } catch (error) {
+    console.error("Error updating data:", error);
+  }
+}
   listenToCollection(collectionName: string, uid: string | null, internalCollection: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
 
@@ -291,12 +352,12 @@ export class FirebaseService {
 
     try {
       const documentRef = doc(this.db, collectionName, docId);
-      console.log(collectionName);
+
 
       await deleteDoc(documentRef);
-      console.log('Document deleted successfully');
+
     } catch (error) {
-      console.error('Error deleting document:', error);
+
     }
   }
   async delete(collectionName: string, userId: string, docId: string, trackerName: string) {
@@ -309,12 +370,11 @@ export class FirebaseService {
       } else {
         documentRef = doc(this.db, collectionName, docId);
       }
-      console.log(documentRef);
+
 
       await deleteDoc(documentRef);
 
     } catch (error) {
-      console.error('Error deleting item:', error);
 
     }
   }
@@ -342,7 +402,7 @@ export class FirebaseService {
       items.splice(itemIndex, 1);
 
       await updateDoc(documentRef, { items });
-      console.log(`Item at index ${itemIndex} deleted successfully`);
+
     } catch (error) {
       console.error('Error deleting item:', error);
     }

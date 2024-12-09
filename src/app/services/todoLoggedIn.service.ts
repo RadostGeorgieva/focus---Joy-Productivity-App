@@ -76,8 +76,6 @@ export class ToDoLoggedInService {
             this.firebaseService.delete('UsersData',uid, listId, this.collectionName)
           ).pipe(
             map(() => {
-              console.log('ToDo list deleted successfully', listId);
-              console.log('client', uid);
             })
           );
         } else {

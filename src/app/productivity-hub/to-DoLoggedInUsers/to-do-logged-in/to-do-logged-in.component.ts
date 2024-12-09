@@ -95,7 +95,6 @@ export class ToDoLoggedInComponent implements OnInit {
         }
       } else {
         console.log(task.id);
-        // Generate a unique ID for the new task if it doesn't exist
         if (!task.id) {
           task.id = uuidv4();
         }

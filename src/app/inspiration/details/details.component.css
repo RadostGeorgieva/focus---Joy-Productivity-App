@@ -1,0 +1,135 @@
+/* Main container for the list details */
+.list-details-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  .list-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .list-header h2 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .list-description {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  
+
+  .metadata {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .metadata div {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+
+  .comments-section {
+    margin-top: 30px;
+  }
+  
+
+  .add-comment-btn {
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .add-comment-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    resize: none;
+    margin-bottom: 10px;
+  }
+  
+  textarea:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+
+  button[type="button"] {
+    background-color: #28a745;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #218838;
+  }
+  
+ 
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul li {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  ul li p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+
+  @media (max-width: 600px) {
+    .list-details-container {
+      padding: 10px;
+    }
+  
+    .list-header h2 {
+      font-size: 1.5rem;
+    }
+  
+    .metadata {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .metadata div {
+      margin-bottom: 10px;
+    }
+  
+    .comments-section {
+      margin-top: 20px;
+    }
+  }
+  

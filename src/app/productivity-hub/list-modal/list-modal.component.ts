@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToDoLoggedIn } from '../../models/to-do.model';
+import { InspirationService } from '../../services/inspiration.service';
 
 @Component({
   selector: 'app-list-modal',
@@ -19,12 +20,25 @@ export class ListModalComponent implements OnChanges {
 
   newListTitle: string = '';
   selectedColor: string = '#FFFFFF';
+  isShared: boolean = false;
+
+  constructor(private inspirationService: InspirationService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['listToEdit'] && this.listToEdit) {
       this.newListTitle = this.listToEdit.title;
-      this.selectedColor = this.listToEdit.color; 
+      this.selectedColor = this.listToEdit.color;
+      this.isShared = this.listToEdit.metadata?.shared || false;
     }
+  }
+  private shareList(list: ToDoLoggedIn): void {
+    this.inspirationService.addList(list)
+      .then(() => {
+        console.log('List shared successfully:', list);
+      })
+      .catch(err => {
+        console.error('Error sharing list:', err);
+      });
   }
 
   saveList(): void {
@@ -32,27 +46,39 @@ export class ListModalComponent implements OnChanges {
       if (this.listToEdit && this.listToEdit.title) {
         this.listToEdit.title = this.newListTitle;
         this.listToEdit.color = this.selectedColor;
+        this.listToEdit.metadata = { ...this.listToEdit.metadata, shared: this.isShared };
 
-        this.listUpdated.emit(this.listToEdit); 
-        console.log('Updated List:', this.listToEdit);
+        this.listUpdated.emit(this.listToEdit);
+        if (this.isShared) {
+          this.shareList(this.listToEdit as ToDoLoggedIn);
+        }
       } else {
         const newList = { title: this.newListTitle, color: this.selectedColor, tasks: [] };
-        this.listCreated.emit(newList); 
+        this.listCreated.emit(newList);
         console.log('New List:', newList);
+        if (this.isShared) {
+          this.shareList(newList as ToDoLoggedIn);
+          console.log('Shared list:', newList);
+        }
       }
     }
+  
     this.closeModal();
   }
 
-  closeModal(): void {
-    this.close.emit();
+closeModal(): void {
+  this.close.emit();
+}
+
+deleteList(): void {
+  if(this.listToEdit && this.listToEdit.title) {
+  this.listDeleted.emit(this.listToEdit.id);
+  console.log('Deleted List ID:', this.listToEdit.id);
+}
+this.closeModal(); 
   }
 
-  deleteList(): void {
-    if (this.listToEdit && this.listToEdit.title) {
-      this.listDeleted.emit(this.listToEdit.id);
-      console.log('Deleted List ID:', this.listToEdit.id);
-    }
-    this.closeModal(); 
-  }
+toggleShareList(): void {
+  this.isShared = !this.isShared;
+}
 }

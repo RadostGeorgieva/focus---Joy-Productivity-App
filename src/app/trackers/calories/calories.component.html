@@ -3,7 +3,8 @@
     <div class="weekly-tracker">
         @for(day of this.week; track $index) {
             <div class="day" [attr.data-day]="day.day">
-                <h4>{{day.day}} {{day.date?.getDate()}}/{{day.date?.getMonth()}}</h4>
+                <h4>{{ day.day }} 
+                    {{ day.date?.getDate() || '' }}/{{ day.date ? day.date.getMonth() + 1 : '' }}</h4>
                 <div class="progress-container">
                     <div class="progress-text">
                         @if(day.editing) {
