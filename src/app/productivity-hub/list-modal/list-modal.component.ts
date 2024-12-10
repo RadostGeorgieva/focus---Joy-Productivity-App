@@ -12,14 +12,14 @@ import { InspirationService } from '../../services/inspiration.service';
   styleUrls: ['./list-modal.component.css']
 })
 export class ListModalComponent implements OnChanges {
-  @Input() listToEdit: ToDoLoggedIn = { title: '', color: '#000000', tasks: [] };
+  @Input() listToEdit: ToDoLoggedIn = { title: '', color: '#87337E', tasks: [] };
   @Output() listUpdated = new EventEmitter<ToDoLoggedIn>();
   @Output() listCreated = new EventEmitter<{ title: string, color: string }>();
   @Output() close = new EventEmitter<void>();
   @Output() listDeleted = new EventEmitter<string>();
 
   newListTitle: string = '';
-  selectedColor: string = '#FFFFFF';
+  selectedColor: string = '#87337E';
   isShared: boolean = false;
 
   constructor(private inspirationService: InspirationService) { }

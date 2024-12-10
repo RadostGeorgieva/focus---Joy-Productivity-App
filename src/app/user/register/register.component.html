@@ -1,22 +1,45 @@
-<body>
-    <section class="container">
-        <div class="register-container">
-            <div class="circle circle-one"></div>
-            <div class="form-container">
-                <img src="images/image.png"
-                    alt="illustration" class="illustration" />
-                <h1 class="opacity">REGISTER</h1>
-                <form (ngSubmit)="registerUser({email,password})">
-                    <input type="email" [(ngModel)]="email" name="email" placeholder="EMAIL" />
-                    <input type="password" [(ngModel)]="password" name="password" placeholder="PASSWORD" />
-                    <button type="submit" class="opacity">SUBMIT</button>
-                </form>
-                <div class="register-forget opacity">
-                    <a href="/login">LOGIN</a>
-                </div>
+<section class="container">
+    <div class="register-container">
+        <div class="circle circle-one"></div>
+        <div class="form-container">
+            <img src="images/image.png" alt="illustration" class="illustration" />
+            <h1 class="opacity">REGISTER</h1>
+            <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+                
+                <input type="email" formControlName="email" placeholder="EMAIL" />
+                @if (hasError('email', 'required')) {
+                <p class="error">Email is required.</p>
+                }
+                @if (hasError('email', 'email')) {
+                <p class="error">Enter a valid email address.</p>
+                }
+                <input type="text" formControlName="username" placeholder="USERNAME" />
+                @if (hasError('username', 'required')) {
+                <p class="error">Username is required.</p>
+                }
+                @if (hasError('username', 'minlength')) {
+                <p class="error">Username must be at least 3 characters.</p>
+                }
+
+                <input type="password" formControlName="password" placeholder="PASSWORD" />
+                @if (hasError('password', 'required')) {
+                <p class="error">Password is required.</p>
+                }
+                @if (hasError('password', 'minlength')) {
+                <p class="error">Password must be at least 6 characters.</p>
+                }
+
+
+                <button type="submit" [disabled]="registerForm.invalid"  [class.disabled-button]="registerForm.invalid" class="opacity">
+                    SUBMIT
+                </button>
+
+            </form>
+            <div class="register-forget opacity">
+                <a href="/login">LOGIN</a>
             </div>
-            <div class="circle circle-two"></div>
         </div>
-        <div class="theme-btn-container"></div>
-    </section>
-</body>
+        <div class="circle circle-two"></div>
+    </div>
+    <div class="theme-btn-container"></div>
+</section>

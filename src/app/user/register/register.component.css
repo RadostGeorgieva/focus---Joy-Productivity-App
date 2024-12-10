@@ -21,7 +21,15 @@ h1 {
 
 
 }
+.error {
+    padding: 5px;
+    color: red;
 
+}
+button.disabled-button {
+    background-color: #ccc;
+    pointer-events: none; 
+}
 .register-container {
     position: relative;
     width: 30rem;
@@ -47,7 +55,7 @@ h1 {
     display: block;
     padding: 14.5px;
     width: 100%;
-    margin: 2rem 0;
+    margin: 1rem 0;
     align-items: center;
     color: var(--color);
     outline: none;

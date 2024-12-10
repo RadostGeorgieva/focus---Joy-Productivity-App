@@ -27,7 +27,7 @@ export class CaloriesService {
       next: (uid) => {
         if (uid) {
           console.log("addStepsData")
-          this.firebaseService.addDocument("UsersData", uid, CaloriesData, this.collectionName)
+          this.firebaseService.addOrUpdateInernalData("UsersData", uid, CaloriesData, this.collectionName)
         return;
         }
       },

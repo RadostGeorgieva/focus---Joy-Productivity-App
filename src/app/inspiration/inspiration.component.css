@@ -88,7 +88,10 @@ button {
     background: linear-gradient(135deg, rgba(110, 68, 255, 0.7), rgba(136, 50, 119, 0.7));
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
+/* Apply the red heart color when liked */
+button.liked .heart-container .svg-filled {
+    fill: red!;  /* Change heart color to red when liked */
+}
 .heart-container {
     --heart-color: #81379C;
     position: absolute;

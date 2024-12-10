@@ -1,74 +1,79 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user.model';
-import { BehaviorSubject, Observable, from } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators'; 
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { BehaviorSubject, Observable, from, of } from 'rxjs';
+import { catchError, switchMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
   private usersCollection = 'users';
 
   constructor(
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private router: Router
-  ) { }
+  ) {}
 
-
-  registerUser(user: { email: string, password: string }): Observable<any> {
+  registerUser(user: { email: string; password: string;  }): Observable<any> {
     return from(this.afAuth.createUserWithEmailAndPassword(user.email, user.password)).pipe(
-      catchError((error) => {
-        throw error;
-      }),
-      switchMap(() => this.afAuth.currentUser),
-      switchMap((user) => {
-        if (user) {
-
-          this.router.navigate(['/home']);
+      switchMap((cred) => {
+        if (cred.user) {
+          const userData = {
+            email: user.email,
+            createdAt: new Date()
+          };
+          return this.createUserDocument(cred.user.uid, userData);
         }
-        return [];
+        return of(null); 
+      }),
+      catchError((error) => {
+        console.error('Error during user registration:', error);
+        return of({ error });
       })
     );
   }
+  
 
-  loginUser(user: { email: string, password: string }): Observable<any> {
+
+  loginUser(user: { email: string; password: string }): Observable<any> {
     return from(this.afAuth.signInWithEmailAndPassword(user.email, user.password)).pipe(
       catchError((error) => {
-        throw error;
+        console.error('Error during login:', error);
+        return of({ error });
       })
     );
   }
-  private clearSessionData(): void {
 
-    localStorage.clear(); 
-    sessionStorage.clear();
-
-  }
 
   logout(): void {
     this.clearSessionData();
     this.afAuth.signOut().then(() => {
-      this.router.navigate(['/home']); 
+      this.router.navigate(['/home']);
     });
   }
 
-  deleteUser(userId: string): Observable<any> {
-    return from(this.firestore.collection('users').doc(userId).delete());
+
+  private clearSessionData(): void {
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
-  
-  createUserDocument(userId: string, userData: any): Observable<any> {
+
+  deleteUser(userId: string): Observable<any> {
+    return from(this.firestore.collection(this.usersCollection).doc(userId).delete());
+  }
+
+
+  private createUserDocument(userId: string, userData: any): Observable<any> {
     return from(
       this.firestore.collection(this.usersCollection).doc(userId).set(userData)
     );
   }
- 
+
+
   getUserProfile(userId: string): Observable<any> {
     return this.firestore.collection(this.usersCollection).doc(userId).valueChanges();
   }
@@ -76,33 +81,23 @@ export class UserService {
 
   getCurrentUserId(): Observable<string | null> {
     return this.afAuth.authState.pipe(
-      switchMap((user) => {
-        if (user) {
-          return of(user.uid); 
-        } else {
-          return of(null);  
-        }
-      })
+      switchMap((user) => (user ? of(user.uid) : of(null)))
     );
   }
 
-
   updateUser(userId: string, updates: any): Observable<any> {
     return from(
-      this.firestore.collection(this.usersCollection).doc(userId).update(updates)
+      this.firestore.collection('users').doc(userId).update(updates)
     );
   }
 
 
   isLoggedIn(): Observable<boolean> {
-    return this.afAuth.authState.pipe(
-      switchMap((user) => of(!!user))
-    );
+    return this.afAuth.authState.pipe(switchMap((user) => of(!!user)));
   }
 
 
   getCurrentUser(): Observable<any> {
     return this.afAuth.authState;
   }
-
 }

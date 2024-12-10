@@ -28,37 +28,11 @@ export class FirebaseService {
     this.db = getFirestore(app);
   }
 
-  // Type Guard to check for 'id' in data
+
   private hasId(data: any): data is { id: string } {
     return (data as { id: string }).id !== undefined;
   }
 
-  //ONLY FOR TODO!
-  listenToToDoCollection(collectionName: string): Observable<any[]> {
-    const collectionSubject = new BehaviorSubject<any[]>([]);
-
-    const collectionRef = collection(this.db, collectionName);
-    onSnapshot(collectionRef, (querySnapshot) => {
-      const data: any[] = querySnapshot.docs.map(doc => {
-        const docData = doc.data();
-        if (collectionName === "to-do-lists") {
-          return {
-            id: doc.id,
-            collection: docData['collection'],
-            items: docData['items'] || [],
-            createdAt: docData['createdAt'] ? docData['createdAt'].toDate().toISOString() : '',
-          };
-        }
-        else {
-          return null
-        }
-      });
-
-      collectionSubject.next(data);
-    });
-
-    return collectionSubject.asObservable();
-  }
 
   getSharedCollection(collectionName: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
@@ -141,47 +115,7 @@ export class FirebaseService {
 
     return collectionSubject.asObservable();
   }
-  // async addWaterData(userId: string, waterData: { date: Date; loggedWater: number; goalWater: number }): Promise<void> {
-  //   console.log("Adding water data for user:", userId);
 
-  //   try {
-  //     let id:string = this.getUID;
-  //     const dateWithoutTime = new Date(waterData.date.setHours(0, 0, 0, 0));
-  //     const dateString = dateWithoutTime.toISOString().split('T')[0];
-  //     const documentId = `${id}_${dateString}`;
-
-  //     const waterDataRef = doc(this.db, 'UsersData', id, 'WaterData', documentId); 
-
-  //     const currentDoc = await getDoc(waterDataRef);
-
-  //     // Create the data for Firestore (don't mutate the original waterData)
-  //     const firestoreData = {
-  //       loggedWater: waterData.loggedWater,
-  //       goalWater: waterData.goalWater,
-  //     };
-
-  //     if (currentDoc.exists()) {
-  //       // If document exists, update it with new data.
-  //       await setDoc(waterDataRef, firestoreData, { merge: true });
-
-  //       console.log("Water data updated successfully:", waterData);
-  //     } else {
-  //       // If document doesn't exist, create a new one.
-  //       await setDoc(waterDataRef, {
-  //         date: dateWithoutTime,
-  //         ...firestoreData,
-  //       });
-  //       console.log("Water data added successfully:", waterData);
-  //     }
-
-  //     // Now reset the original waterData object
-  //     //waterData.loggedWater = 0;
-  //     waterData.goalWater = 0;
-  //     console.log('Cleared water data after saving.');
-  //   } catch (error) {
-  //     console.error("Error adding water data:", error);
-  //   }
-  // }
 
   createId(data: Item, trackerName: string) {
 
@@ -377,38 +311,6 @@ export class FirebaseService {
     } catch (error) {
 
     }
-  }
-
-
-  async deleteToDoItem(collectionName: string, docId: string, itemIndex: number): Promise<void> {
-    try {
-      const documentRef = doc(this.db, collectionName, docId);
-
-      const currentDoc = await getDoc(documentRef);
-
-      if (!currentDoc.exists()) {
-        console.error('Document does not exist!');
-        return;
-      }
-
-      const currentData = currentDoc.data();
-      const items = currentData['items'] || [];
-
-      if (itemIndex < 0 || itemIndex >= items.length) {
-        console.error('Invalid item index');
-        return;
-      }
-
-      items.splice(itemIndex, 1);
-
-      await updateDoc(documentRef, { items });
-
-    } catch (error) {
-      console.error('Error deleting item:', error);
-    }
-  }
-  getUID(): Observable<string | null> {
-    return from(this.userService.getCurrentUserId());
   }
 
 }

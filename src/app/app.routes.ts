@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { ToDoComponent } from './to-do/to-do.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
@@ -14,6 +13,7 @@ import { DetailsComponent } from './inspiration/details/details.component';
 
 
 
+
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
@@ -22,7 +22,6 @@ export const routes: Routes = [
   { path: 'trackers', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'productivity', component: ProductivityHubComponent, canActivate: [AuthGuard] },
   { path: 'performance', component: PerformanceComponent, canActivate: [AuthGuard] },
-  { path: 'to-do', component: ToDoComponent, canActivate: [NoAuthGuard] },
   { path: 'inspiration', component: InspirationComponent, canActivate: [AuthOrNoAuthGuard]},
   { path: 'inspiration/:id', component: DetailsComponent },
   { path: '**', redirectTo: 'home' }, 

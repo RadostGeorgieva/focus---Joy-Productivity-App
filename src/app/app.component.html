@@ -12,7 +12,6 @@
             <li><a routerLink="/inspiration">Inspiration</a></li>
             }
             @if (!isLoggedIn) {
-            <li><a routerLink="/to-do">To-Do</a></li>
             <li><a routerLink="/inspiration">Inspiration</a></li>
             <li><a routerLink="/login">Login</a></li>
             <li><a routerLink="/register">Register</a></li>
@@ -20,10 +19,8 @@
                 <li class="profile">
                     <img (click)="toggleDropdown()" class="profile-pic" src="images\mushrooms\mushroom-7882746_1280.png"
                     alt="profilePic">
-                    <p id="username">Joy</p>
                     @if(isDropdownVisible) {
                     <div class="dropdown">
-                        <a href="#">Edit User</a>
                         <li><a (click)="logout()" class="logout">Logout</a></li>
                     </div>
                     }

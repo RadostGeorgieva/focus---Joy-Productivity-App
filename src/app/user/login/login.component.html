@@ -1,23 +1,30 @@
-<body>
-    <section class="container">
-        <div class="login-container">
-            <div class="circle circle-one"></div>
-            <div class="form-container">
-                <img src="images/image.png"
+<section class="container">
+    <div class="register-container">
+        <div class="circle circle-one"></div>
+        <div class="form-container">
 
-                    alt="illustration" class="illustration" />
-                <h1 class="opacity">LOGIN</h1>
-                <form (ngSubmit)="loginUser({email,password})">
-                    <input type="email" [(ngModel)]="email" name="email" placeholder="EMAIL" />
-                    <input type="password" [(ngModel)]="password" name="password" placeholder="PASSWORD" />
-                    <button class="opacity">SUBMIT</button>
-                </form>
-                <div class="register-forget opacity">
-                    <a href="/register">REGISTER</a>
-                </div>
+            <h1 class="opacity">LOGIN</h1>
+            <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+                <input type="email" formControlName="email" placeholder="EMAIL" />
+                @if (hasError('email', 'required') && loginForm.get('email')?.touched) {
+                <p class="error">Email is required.</p>
+                }
+                <input type="password" formControlName="password" placeholder="PASSWORD" />
+                @if (hasError('password', 'required') && loginForm.get('password')?.touched ) {
+                <p class="error">Password is required.</p>
+                }
+                @if (errorMessage) {
+                <p class="error">{{ errorMessage }}.</p>
+                }
+                <button type="submit" [disabled]="loginForm.invalid" [class.disabled-button]="loginForm.invalid"
+                    class="opacity">
+                    LOGIN</button>
+            </form>
+            <div class="register-forget opacity">
+                <a href="/register">REGISTER</a>
             </div>
-            <div class="circle circle-two"></div>
         </div>
-        <div class="theme-btn-container"></div>
-    </section>
-</body>
+        <div class="circle circle-two"></div>
+    </div>
+    <div class="theme-btn-container"></div>
+</section>

@@ -15,6 +15,7 @@ export class DetailsComponent implements OnInit {
   list: any = null;
   showCommentInput: boolean = false;
   newComment: string = '';
+  loggedUserID: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,9 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
 
     this.listId = this.route.snapshot.paramMap.get('id');
+    this.inspirationService.getUID().then((uid) => {
+      this.loggedUserID = uid;
+      }) 
 
     if (this.listId) {
       this.fetchListDetails(this.listId);

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToDoComponent } from '../to-do/to-do.component';
+
 import { MoodComponent } from '../trackers/mood/mood.component';
 
 @Component({

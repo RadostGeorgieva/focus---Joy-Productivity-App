@@ -3,13 +3,15 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { WaterService } from './water.service';
 import { StepsService } from './steps.service';
+import { CaloriesService } from './calories.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class performanceService {
   constructor(private waterService: WaterService,
-              private stepService: StepsService
+              private stepService: StepsService,
+              private caloriesService: CaloriesService,
 
   ) { }
 
@@ -98,4 +100,48 @@ export class performanceService {
       })
     );
   }
+
+  getCaloriesData(): Observable<any> {
+    return this.caloriesService.getCollectionData().pipe(
+      map((caloriesData) => {
+        console.log('Received calories data:', caloriesData);
+
+        if (!caloriesData || caloriesData.length === 0) {
+          console.log('No calories data available.');
+          return {};
+        }
+
+        const caloriesLabels = caloriesData.map((item) => {
+          if (item.data && item.data.date && item.data.date.seconds) {
+            return new Date(item.data.date.seconds * 1000).toLocaleDateString();
+          } else {
+            return '';
+          }
+        });
+        const loggedCalories = caloriesData.map((item) => item.data.loggedCalories);
+        const goalCalories = caloriesData.map((item) => item.data.goalCalories);
+
+        console.log('Transformed calories data:', {
+          calories: {
+            labels: caloriesLabels,
+            loggedCalories: loggedCalories,
+            goalCalories: goalCalories,
+          },
+        });
+
+        return {
+          water: {
+            labels: caloriesLabels,
+            loggedCalories: loggedCalories,
+            goalCalories: goalCalories,
+          },
+        };
+      }),
+      catchError((error) => {
+        console.error('Error in performance service:', error);
+        return of({ calories: { labels: [], loggedCalories: [], goalCalories: [] } });
+      })
+    );
+  }
+
 }
