@@ -71,7 +71,6 @@ export class ToDoLoggedInComponent implements OnInit {
       color: listData.color,
       tasks: []
     };
-    console.log(newList);
 
     this.toDoService.addToDoList(newList)
       .then(() => {
@@ -87,14 +86,12 @@ export class ToDoLoggedInComponent implements OnInit {
 
 
       if (this.taskToEdit) {
-        console.log(this.taskToEdit);
 
         const taskIndex = this.selectedTaskList.tasks.findIndex(t => t === this.taskToEdit);
         if (taskIndex !== -1) {
           this.selectedTaskList.tasks[taskIndex] = task;
         }
       } else {
-        console.log(task.id);
         if (!task.id) {
           task.id = uuidv4();
         }
@@ -111,7 +108,6 @@ export class ToDoLoggedInComponent implements OnInit {
 
   handleListUpdated(updatedList: ToDoLoggedIn): void {
     const index = this.toDoLists.findIndex(list => list.id === updatedList.id);
-    console.log(updatedList.id);
 
     if (index !== -1) {
       this.toDoLists[index] = updatedList;
@@ -141,7 +137,6 @@ export class ToDoLoggedInComponent implements OnInit {
   onDeleteList(listId: string) {
     this.toDoService.deleteToDoList(listId).subscribe({
       next: () => {
-        console.log('List deleted', listId);
       },
       error: (err) => {
         console.error('Error deleting list:', err);

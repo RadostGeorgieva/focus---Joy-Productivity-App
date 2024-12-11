@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { FirebaseService } from './services/firebase.service';
-import { ToDoList } from './models/to-do.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { UserService } from './services/user.service';
-import { TaskModalComponent } from './productivity-hub/task-modal/task-modal.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [TaskModalComponent, RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

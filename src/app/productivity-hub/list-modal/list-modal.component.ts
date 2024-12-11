@@ -55,10 +55,8 @@ export class ListModalComponent implements OnChanges {
       } else {
         const newList = { title: this.newListTitle, color: this.selectedColor, tasks: [] };
         this.listCreated.emit(newList);
-        console.log('New List:', newList);
         if (this.isShared) {
           this.shareList(newList as ToDoLoggedIn);
-          console.log('Shared list:', newList);
         }
       }
     }
@@ -73,7 +71,6 @@ closeModal(): void {
 deleteList(): void {
   if(this.listToEdit && this.listToEdit.title) {
   this.listDeleted.emit(this.listToEdit.id);
-  console.log('Deleted List ID:', this.listToEdit.id);
 }
 this.closeModal(); 
   }

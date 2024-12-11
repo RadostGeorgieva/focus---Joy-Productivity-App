@@ -23,7 +23,6 @@ export class PerformanceComponent implements OnInit {
     this.performanceService.getWaterData().subscribe(data => {
       const waterData = data?.water;
       if (waterData && waterData.labels && waterData.loggedWater && waterData.goalWater) {
-        console.log("waterData", waterData);
         this.createWaterChart(waterData.labels, waterData.loggedWater, waterData.goalWater);
       } else {
         console.error('Invalid water data received', data);
@@ -43,7 +42,6 @@ export class PerformanceComponent implements OnInit {
     this.performanceService.getCaloriesData().subscribe(data => {
       const caloriesData = data?.calories;
       if (caloriesData && caloriesData.labels && caloriesData.loggedCalories && caloriesData.goalCalories) {
-        console.log("caloriesData", caloriesData);
         this.createCaloriesChart(caloriesData.labels, caloriesData.loggedCalories, caloriesData.goalCalories);
       } else {
         console.error('Invalid calories data received', data);
@@ -126,7 +124,7 @@ export class PerformanceComponent implements OnInit {
   }
   
   createStepsChart(labels: string[], loggedSteps: number[], goalSteps: number[]): void {
-    this.stepsChart = new Chart('stepschart', {
+    this.stepsChart = new Chart('stepsChart', {
       type: 'line',
       data: {
         labels: labels,
@@ -140,7 +138,7 @@ export class PerformanceComponent implements OnInit {
         }, {
           label: 'Goal Steps',
           data: goalSteps,
-          borderColor: '#7440E2',
+          borderColor: '#7A3CC1',
           backgroundColor: 'rgba(255, 254, 255,0.3)',
           fill: false,
           tension: 0.4,
@@ -169,7 +167,7 @@ export class PerformanceComponent implements OnInit {
           y: {
             beginAtZero: true,
             ticks: {
-              stepSize: 500,
+              stepSize: 2000,
               font: {
                 size: 12,
                 family: 'Arial',
@@ -177,7 +175,7 @@ export class PerformanceComponent implements OnInit {
               color: '#ffffff',
             },
             grid: {
-              display: false, 
+              display: false,
             },
           },
           x: {
@@ -189,16 +187,17 @@ export class PerformanceComponent implements OnInit {
               color: '#ffffff',
             },
             grid: {
-              display: false,
+              display: false, 
             },
           }
         }
       }
     });
-  }
+  }  
+
   createCaloriesChart(labels: string[], loggedCalories: number[], goalCalories: number[]): void {
     this.caloriesChart = new Chart('caloriesChart', {
-      type: 'bar', // Change to 'bar' for a column chart
+      type: 'bar',
       data: {
         labels: labels,
         datasets: [{

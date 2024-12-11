@@ -298,57 +298,57 @@ h2 {
     box-shadow: 0.6px 0.6px 0.6px #666;
   }
   .leg-rt {
-    width: 5.4px; /* 9px * 0.6 */
-    height: 36px; /* 60px * 0.6 */
+    width: 5.4px;
+    height: 36px;
     background: #666;
-    bottom: -19.8px; /* -33px * 0.6 */
+    bottom: -19.8px;
     position: absolute;
-    left: 78px; /* 130px * 0.6 */
+    left: 78px;
     z-index: 2;
-    box-shadow: -0.6px 0px 0.6px #333; /* -1px * 0.6 */
+    box-shadow: -0.6px 0px 0.6px #333;
   }
   
   .foot-rt {
-    width: 12px; /* 20px * 0.6 */
-    height: 4.8px; /* 8px * 0.6 */
+    width: 12px;
+    height: 4.8px;
     background: #666;
-    bottom: -23.4px; /* -39px * 0.6 */
+    bottom: -23.4px;
     position: absolute;
-    left: 77.4px; /* 129px * 0.6 */
+    left: 77.4px;
     -webkit-transform: rotate(15deg);
     -moz-transform: rotate(15deg);
     -o-transform: rotate(15deg);
     -ms-transform: rotate(15deg);
     transform: rotate(15deg);
-    border-radius: 3px; /* 5px * 0.6 */
+    border-radius: 3px;
     z-index: 2;
-    box-shadow: 0px 0.6px -0.6px #333; /* 1px * 0.6 */
+    box-shadow: 0px 0.6px -0.6px #333;
   }
   
   .foot-rt-shadow {
-    width: 12px; /* 20px * 0.6 */
-    height: 4.8px; /* 8px * 0.6 */
+    width: 12px;
+    height: 4.8px;
     background: #ccc;
-    bottom: -23.4px; /* -39px * 0.6 */
+    bottom: -23.4px;
     position: absolute;
-    left: 81px; /* 135px * 0.6 */
+    left: 81px;
     -webkit-transform: rotate(15deg);
     -moz-transform: rotate(15deg);
     -o-transform: rotate(15deg);
     -ms-transform: rotate(15deg);
     transform: rotate(15deg);
-    border-radius: 3px; /* 5px * 0.6 */
-    box-shadow: 0.6px 0.6px 0.6px #666; /* 1px * 0.6 */
+    border-radius: 3px;
+    box-shadow: 0.6px 0.6px 0.6px #666;
   }
   
   .leg-rt-shadow {
-    width: 5.4px; /* 9px * 0.6 */
-    height: 36px; /* 60px * 0.6 */
+    width: 5.4px;
+    height: 36px;
     background: #ccc;
-    bottom: -19.8px; /* -33px * 0.6 */
+    bottom: -19.8px;
     position: absolute;
-    left: 81px; /* 135px * 0.6 */
-    box-shadow: 0.6px 0.6px 0.6px #666; /* 1px * 0.6 */
+    left: 81px;
+    box-shadow: 0.6px 0.6px 0.6px #666;
   }
   
 .sheep-head {

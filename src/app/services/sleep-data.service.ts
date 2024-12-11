@@ -38,7 +38,6 @@ export class SleepService {
 
       try {
         await this.firebaseService.addDocument('UsersData', uid, updatedItem, this.collectionName)
-        console.log("testaeditSleepData");
       } catch (err) {
         console.error("Error updating sleep data:", err);
       }
@@ -49,7 +48,6 @@ export class SleepService {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid){
-          console.log("testaddHours");
           this.firebaseService.addDocument("UsersData", uid, sleepData, this.collectionName)
         return;
         }
@@ -62,7 +60,6 @@ export class SleepService {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid)   {
-          console.log("testaddHours");
           this.firebaseService.addDocument("UsersData", uid, {date,hours}, this.collectionName)
           return;
         }    

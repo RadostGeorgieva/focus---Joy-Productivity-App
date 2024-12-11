@@ -34,7 +34,6 @@ export class TaskModalComponent {
   deleteList() {
 
     if (this.selectedTaskList) {
-      console.log(`Deleting list: ${this.selectedTaskList.title}`);
       this.onClose();
     }
   }

@@ -18,8 +18,6 @@ export class performanceService {
   getWaterData(): Observable<any> {
     return this.waterService.getCollectionData().pipe(
       map((waterData) => {
-        console.log('Received water data:', waterData);
-
         if (!waterData || waterData.length === 0) {
           console.log('No water data available.');
           return {};
@@ -34,14 +32,6 @@ export class performanceService {
         });
         const loggedWater = waterData.map((item) => item.data.loggedWater);
         const goalWater = waterData.map((item) => item.data.goalWater);
-
-        console.log('Transformed water data:', {
-          water: {
-            labels: waterLabels,
-            loggedWater: loggedWater,
-            goalWater: goalWater,
-          },
-        });
 
         return {
           water: {
@@ -61,8 +51,6 @@ export class performanceService {
   getStepsData(): Observable<any> {
     return this.stepService.getCollectionData().pipe(
       map((stepsData) => {
-        console.log('Received steps data:', stepsData);
-
         if (!stepsData || stepsData.length === 0) {
           console.log('No water data available.');
           return {};
@@ -104,10 +92,8 @@ export class performanceService {
   getCaloriesData(): Observable<any> {
     return this.caloriesService.getCollectionData().pipe(
       map((caloriesData) => {
-        console.log('Received calories data:', caloriesData);
 
         if (!caloriesData || caloriesData.length === 0) {
-          console.log('No calories data available.');
           return {};
         }
 
@@ -121,16 +107,8 @@ export class performanceService {
         const loggedCalories = caloriesData.map((item) => item.data.loggedCalories);
         const goalCalories = caloriesData.map((item) => item.data.goalCalories);
 
-        console.log('Transformed calories data:', {
-          calories: {
-            labels: caloriesLabels,
-            loggedCalories: loggedCalories,
-            goalCalories: goalCalories,
-          },
-        });
-
         return {
-          water: {
+          calories: {
             labels: caloriesLabels,
             loggedCalories: loggedCalories,
             goalCalories: goalCalories,
@@ -138,7 +116,6 @@ export class performanceService {
         };
       }),
       catchError((error) => {
-        console.error('Error in performance service:', error);
         return of({ calories: { labels: [], loggedCalories: [], goalCalories: [] } });
       })
     );

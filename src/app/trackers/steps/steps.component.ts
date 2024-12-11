@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { StepsService } from '../../services/steps.service';
 import { StepsData } from '../../models/stepsData.model';
+import { ProgressBarPipe } from '../progress-bar.pipe';
 
 @Component({
   selector: 'app-steps',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ProgressBarPipe],
   templateUrl: './steps.component.html',
   styleUrl: './steps.component.css'
 })
@@ -72,7 +73,13 @@ export class StepsComponent implements OnInit {
     if (day.adding) {
       day.loggedSteps += day.inputAmount;
       day.inputAmount = 0;
-
+      if (day.loggedSteps < 0) {
+        day.loggedSteps = 0;
+      }
+  
+      if (day.goalSteps < 0) {
+        day.goalSteps = 0;
+      }
       const stepsData = {
         date: day.date,
         loggedSteps: day.loggedSteps,
@@ -86,6 +93,10 @@ export class StepsComponent implements OnInit {
   toggleEdit(day: any): void {
     day.editing = !day.editing;
     if (day.loggedSteps < 0) {
+      day.loggedSteps = 0;
+    }
+
+    if (day.goalSteps < 0) {
       day.goalSteps = 0;
     }
     const stepsData = {
@@ -99,9 +110,7 @@ export class StepsComponent implements OnInit {
   addSteps(stepsData: { date: Date, loggedSteps: number, goalSteps: number }) {
     this.stepsService.addStepsData(stepsData)
   }
-  getProgressBarWidth(loggedSteps: number, goalSteps: number): string {
-    return `${Math.min(loggedSteps / goalSteps, 1) * 100}%`;
-  }
+
 
 }
 

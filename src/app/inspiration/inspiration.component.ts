@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { InspirationService } from '../services/inspiration.service';
-import { UserService } from '../services/user.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -17,21 +16,18 @@ export class InspirationComponent implements OnInit {
 
   constructor(
     private inspirationService: InspirationService,
-    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.inspirationService.getUID().then((uid) => {
       this.loggedUserID = uid;
       
-      // After getting loggedUserID, fetch shared lists
       this.inspirationService.getSharedLists().subscribe({
         next: (data) => {
           if (data) {
-            // Map the shared lists and check if the loggedUserID is in the likedBy array
             this.sharedLists = data.map((e) => {
               const list = e.data;
-              list.likedByMe = list.likedBy?.includes(this.loggedUserID);  // Check if user has liked the list
+              list.likedByMe = list.likedBy?.includes(this.loggedUserID);
               return list;
             });
           }
@@ -58,11 +54,11 @@ export class InspirationComponent implements OnInit {
     if (hasLiked) {
       list.metadata.likesCount = Math.max((list.metadata.likesCount || 1) - 1, 0);
       list.likedBy = list.likedBy.filter((id: string) => id !== this.loggedUserID);
-      list.likedByMe = false;  // Set the likedByMe flag to false
+      list.likedByMe = false;
     } else {
       list.metadata.likesCount = (list.metadata.likesCount || 0) + 1;
       list.likedBy = [...(list.likedBy || []), this.loggedUserID];
-      list.likedByMe = true;  // Set the likedByMe flag to true
+      list.likedByMe = true; 
     }
 
     this.inspirationService.editList(list)

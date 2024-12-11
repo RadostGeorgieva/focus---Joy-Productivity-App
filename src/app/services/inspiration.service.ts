@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from './firebase.service';
 import { Observable, firstValueFrom } from 'rxjs';
-import { switchMap, take, map,tap } from 'rxjs/operators';
 import { ToDoLoggedIn } from '../models/to-do.model';
 import { UserService } from './user.service';
 
@@ -54,9 +53,7 @@ export class InspirationService {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid){
-          this.firebaseService.postSharedCollection('Shared','lists', list)
-          console.log("editing..",list);
-          
+          this.firebaseService.postSharedCollection('Shared','lists', list)         
         }
         return;
       },

@@ -19,7 +19,6 @@ export class FlowerMoodComponent implements AfterViewInit {
 
   isAnimationInitialized = false;
 
-
   constructor(private cdRef: ChangeDetectorRef) { }
 
   ngAfterViewInit() {
@@ -699,7 +698,7 @@ export class FlowerMoodComponent implements AfterViewInit {
         .to(
           stemElement, {
           duration: 0.3,
-          attr: { d: targetPathData },  // Morph the 'd' attribute
+          attr: { d: targetPathData },
           ease: "none"
         })
       return tlHappy2;

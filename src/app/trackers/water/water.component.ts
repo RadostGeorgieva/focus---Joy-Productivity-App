@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WaterService } from '../../services/water.service';
 import { WaterData } from '../../models/waterData.model';
+import { ProgressBarPipe } from '../progress-bar.pipe';
 
 @Component({
   selector: 'app-water',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ProgressBarPipe],
   templateUrl: './water.component.html',
   styleUrl: './water.component.css'
 })
@@ -57,9 +58,6 @@ export class WaterComponent implements OnInit {
             if (matchingData) {
               day.loggedWater = matchingData.data.loggedWater;
               day.goalWater = matchingData.data.goalWater
-              console.log(matchingData);
-              
-
             }
           }
         });
@@ -75,7 +73,13 @@ export class WaterComponent implements OnInit {
     if (day.adding) {
       day.loggedWater += day.inputAmount;
       day.inputAmount = 0;
-
+      if (day.loggedWater < 0) {
+        day.loggedWater = 0;
+      }
+  
+      if (day.goalWater < 0) {
+        day.goalWater = 0;
+      }
       const waterData = {
         date: day.date,
         loggedWater: day.loggedWater,
@@ -91,6 +95,10 @@ export class WaterComponent implements OnInit {
     if (day.loggedWater < 0) {
       day.loggedWater = 0;
     }
+
+    if (day.goalWater < 0) {
+      day.goalWater = 0;
+    }
     const waterData = {
       date: day.date,
       loggedWater: day.loggedWater,
@@ -99,13 +107,9 @@ export class WaterComponent implements OnInit {
     this.addWater(waterData);
   }
 
-  addWater(waterData: { date: Date, loggedWater: number, goalWater: number }) {
-    console.log("addWater from waterComponent");
-    
+  addWater(waterData: { date: Date, loggedWater: number, goalWater: number }) { 
     this.waterService.addWaterData(waterData)
   }
-  getProgressBarWidth(loggedWater: number, goalWater: number): string {
-    return `${Math.min(loggedWater / goalWater, 1) * 100}%`;
-  }
+
 }
 

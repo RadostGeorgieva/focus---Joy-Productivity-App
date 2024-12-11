@@ -19,7 +19,7 @@
                     <div class="progress">
                       <div
                         class="progress-bar"
-                        [style.width]="getProgressBarWidth(day.loggedCalories, day.goalCalories)">
+                        [style.width]="day.loggedCalories | progressBar: day.goalCalories">
                       </div>
                     </div>
                   </div>

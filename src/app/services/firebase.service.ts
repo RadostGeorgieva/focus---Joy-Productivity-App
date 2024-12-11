@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { query, where, DocumentReference, arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
+import { DocumentReference, arrayUnion, getFirestore, collection, Timestamp, onSnapshot, getDocs, getDoc, addDoc, doc, updateDoc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
 import { environment } from '../../environments/environment';
-import { Observable, from, BehaviorSubject } from 'rxjs';
-import { ToDoLoggedIn } from '../models/to-do.model';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { ToDoLoggedIn, ToDoList } from '../models/to-do.model';
 import { CaloriesData } from '../models/calories-data.model';
 import { StepsData } from '../models/stepsData.model';
 import { WaterData } from '../models/waterData.model';
 import { SleepData } from '../models/sleep-data.model';
-import { ToDoList } from '../models/to-do.model';
 import { UserService } from './user.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { v4 as uuidv4 } from 'uuid';
-import { list } from '@angular/fire/database';
+
 
 type Item = CaloriesData | ToDoLoggedIn | StepsData | WaterData | SleepData;
 
@@ -36,20 +35,20 @@ export class FirebaseService {
 
   getSharedCollection(collectionName: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
-  
+
     const collectionRef = collection(this.db, collectionName);
     onSnapshot(collectionRef, (querySnapshot) => {
       const data: any[] = querySnapshot.docs.map(doc => {
         const docData = doc.data();
         return {
-          id: doc.id, 
-          data: docData, 
+          id: doc.id,
+          data: docData,
         };
       });
-  
+
       collectionSubject.next(data);
     });
-  
+
     return collectionSubject.asObservable();
   }
   async getSharedDocument(collectionName: string, listId: string): Promise<any> {
@@ -57,9 +56,7 @@ export class FirebaseService {
 
       const collectionRef = collection(this.db, collectionName);
       const documentRef = doc(collectionRef, listId);
-  
       const currentDoc = await getDoc(documentRef);
-  
       if (currentDoc.exists()) {
         return currentDoc.data();
       } else {
@@ -71,29 +68,29 @@ export class FirebaseService {
       throw error;
     }
   }
-  
-  async postSharedCollection(collectionName: string, internalCollection: string, data: any): Promise<void> {
-  try {
-    const documentId = data.id || this.createId(data, internalCollection);
-    
-    if (!documentId) {
-      throw new Error('Failed to generate documentId');
-    }
-    const collectionRef = collection(this.db, collectionName);
-    const documentRef = doc(collectionRef, documentId);
-    const currentDoc = await getDoc(documentRef);
 
-    if (currentDoc.exists()) {
-      const existingData = currentDoc.data();
-      const mergedData = { ...existingData, ...data };
-      await setDoc(documentRef, mergedData);
-    } else {
-      await setDoc(documentRef, data);
+  async postSharedCollection(collectionName: string, internalCollection: string, data: any): Promise<void> {
+    try {
+      const documentId = data.id || this.createId(data, internalCollection);
+
+      if (!documentId) {
+        throw new Error('Failed to generate documentId');
+      }
+      const collectionRef = collection(this.db, collectionName);
+      const documentRef = doc(collectionRef, documentId);
+      const currentDoc = await getDoc(documentRef);
+
+      if (currentDoc.exists()) {
+        const existingData = currentDoc.data();
+        const mergedData = { ...existingData, ...data };
+        await setDoc(documentRef, mergedData);
+      } else {
+        await setDoc(documentRef, data);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
     }
-  } catch (error) {
-    console.error("Error updating data:", error);
   }
-}
   listenToCollection(collectionName: string, uid: string | null, internalCollection: string): Observable<any[]> {
     const collectionSubject = new BehaviorSubject<any[]>([]);
 
@@ -112,7 +109,6 @@ export class FirebaseService {
         collectionSubject.next(data);
       });
     }
-
     return collectionSubject.asObservable();
   }
 
@@ -129,10 +125,7 @@ export class FirebaseService {
       return documentId;
 
     } else if ('tasks' in data && 'title' in data) {
-
       documentId = `${data.title}_${uuidv4()}`;
-      console.log("ID WITH NUMBER:", documentId);
-
       return documentId;
 
     }
@@ -157,11 +150,8 @@ export class FirebaseService {
         const mergedData = { ...existingData, ...data };
 
         await setDoc(documentRef, mergedData)
-        console.log("Document updated with merged data (via custom ID):", mergedData);
-
       } else {
         await setDoc(documentRef, data)
-        console.log("New document added successfully:", data);
       }
     } catch (error) {
       console.error("Error updateing data:", error);
@@ -241,13 +231,10 @@ export class FirebaseService {
   }
   async addItemToList(collectionName: string, docId: string, item: ToDoList): Promise<void> {
     try {
-      console.log('Adding item:', { collectionName, docId, item });
       const documentRef = doc(this.db, collectionName, docId);
       await updateDoc(documentRef, {
         items: arrayUnion(item),
       });
-
-      console.log('Item added to the list successfully');
     } catch (error) {
       console.error('Error adding item:', error);
     }
@@ -262,7 +249,6 @@ export class FirebaseService {
         documentRef = doc(this.db, collectionName, docId, innerCollection, `${index}`);
       } else {
         documentRef = doc(this.db, collectionName, docId);
-        console.log(documentRef);
       }
 
       const currentDoc = await getDoc(documentRef);
@@ -272,10 +258,8 @@ export class FirebaseService {
         return;
       } else {
         const currentData = currentDoc.data();
-        console.log(currentData);
-
         await setDoc(documentRef, updatedItem);
-        console.log("Document updated successfully.");
+;
       }
     } catch (error) {
       console.error("Error updating document:", error);

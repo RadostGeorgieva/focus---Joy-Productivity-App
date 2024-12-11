@@ -9,14 +9,14 @@
     <div class="shared-list-item">
       <h3>{{ list.title }}</h3>
       <ul>
-        @for (item of list.tasks; track $index) {
+        @for (item of list.tasks.slice(0,3); track $index) {
         <li class="item">{{item.title}}</li>
         }
       </ul>
       <button [routerLink]="['/inspiration', list.id]">View Details</button>
       @if (this.loggedUserID != list.user && this.loggedUserID!= null) {
         <div class="heart-container" title="Like" [class.liked]="list.isLiked" (click)="toggleLike(list)" [class.liked]="list.likedByMe">
-          <input type="checkbox" class="checkbox" id="Give-It-An-Id">
+          <input type="checkbox" class="checkbox" id="Give-It-An-Id"  [checked]="list.likedByMe">
           <div class="svg-container">
             <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
               <path

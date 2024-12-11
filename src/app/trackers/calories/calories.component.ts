@@ -2,24 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CaloriesService } from '../../services/calories.service';
 import { CaloriesData } from '../../models/calories-data.model';
+import { ProgressBarPipe } from '../progress-bar.pipe';
 
 @Component({
   selector: 'app-calories',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ProgressBarPipe],
   templateUrl: './calories.component.html',
   styleUrl: './calories.component.css'
 })
 export class CaloriesComponent implements OnInit {
   caloriesData: CaloriesData = { date: new Date(), loggedCalories: 0, goalCalories: 0 };
   week = [
-    { day: 'Monday', adding: false, editing: false, date: new Date(), loggedCalories: 0, goalCalories: 10000, inputAmount: 0 },
-    { day: 'Tuesday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 10000, inputAmount: 0 },
-    { day: 'Wednesday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 10000, inputAmount: 0 },
-    { day: 'Thursday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 10000, inputAmount: 0 },
-    { day: 'Friday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 10000, inputAmount: 0 },
-    { day: 'Saturday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 10000, inputAmount: 0 },
-    { day: 'Sunday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 10000, inputAmount: 0 }
+    { day: 'Monday', adding: false, editing: false, date: new Date(), loggedCalories: 0, goalCalories: 2000, inputAmount: 0 },
+    { day: 'Tuesday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 2000, inputAmount: 0 },
+    { day: 'Wednesday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 2000, inputAmount: 0 },
+    { day: 'Thursday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 2000, inputAmount: 0 },
+    { day: 'Friday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 2000, inputAmount: 0 },
+    { day: 'Saturday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 2000, inputAmount: 0 },
+    { day: 'Sunday', adding: false, editing: false, date: null, loggedCalories: 0, goalCalories: 2000, inputAmount: 0 }
   ];
 
   inputAmount: number = 0;
@@ -68,24 +69,34 @@ export class CaloriesComponent implements OnInit {
   }
 
   toggleInput(day: any): void {
-
     if (day.adding) {
       day.loggedCalories += day.inputAmount;
       day.inputAmount = 0;
-
+        if (day.loggedCalories < 0) {
+        day.loggedCalories = 0;
+      }
+  
+      if (day.goalCalories < 0) {
+        day.goalCalories = 0;
+      }
+  
       const CaloriesData = {
         date: day.date,
         loggedCalories: day.loggedCalories,
         goalCalories: day.goalCalories
-      }
+      };
+  
       this.addCalories(CaloriesData);
     }
     day.adding = !day.adding;
-
   }
   toggleEdit(day: any): void {
     day.editing = !day.editing;
     if (day.loggedCalories < 0) {
+      day.loggedCalories = 0;
+    }
+
+    if (day.goalCalories < 0) {
       day.goalCalories = 0;
     }
     const CaloriesData = {
@@ -97,13 +108,7 @@ export class CaloriesComponent implements OnInit {
   }
 
   addCalories(CaloriesData: { date: Date, loggedCalories: number, goalCalories: number }) {
-   console.log("addCalories");
-   
     this.CaloriesService.addCaloriesData(CaloriesData)
-  }
-
-  getProgressBarWidth(loggedCalories: number, goalCalories: number): string {
-    return `${Math.min(loggedCalories / goalCalories, 1) * 100}%`;
   }
 
 }

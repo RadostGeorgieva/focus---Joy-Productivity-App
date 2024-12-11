@@ -20,7 +20,7 @@ export class StepsService {
 
   getUID(): Observable<string | null> {
     return this.userService.getCurrentUserId().pipe(
-      tap(uid => console.log("UID after logout:", uid))
+      tap(uid => console.log("logout"))
     );
   }
 
@@ -28,7 +28,6 @@ export class StepsService {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid){
-          console.log("addStepsData");
           this.firebaseService.addOrUpdateInernalData("UsersData", uid, StepsData, this.collectionName)
         }
         return;

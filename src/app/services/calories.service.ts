@@ -22,11 +22,9 @@ export class CaloriesService {
   }
 
   async addCaloriesData(CaloriesData: { date: Date, loggedCalories: number, goalCalories:number }): Promise<void> {
-    console.log("addCalories, calorieService");
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid) {
-          console.log("addStepsData")
           this.firebaseService.addOrUpdateInernalData("UsersData", uid, CaloriesData, this.collectionName)
         return;
         }
