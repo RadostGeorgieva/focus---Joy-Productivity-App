@@ -40,6 +40,7 @@ export class SleepComponent implements OnInit {
     this.sleepService.getCollectionData().subscribe({
       next: (data) => {
         this.sleepData = data;
+
         this.loadLogsForWeek()
       },
       error: (error) => {
@@ -88,9 +89,10 @@ export class SleepComponent implements OnInit {
     this.endTime = 0;
     this.sleepQuality = 0;
     this.hasLog = false;
-
+    this.resetForm();
   }
   editLog(sleepQuality: number, dreams: string, startTime: number, endTime: number, id: string, selectedDate: Date) {
+    console.log(sleepQuality, dreams, startTime, endTime);
 
     const data = {
       date: selectedDate,
@@ -107,16 +109,31 @@ export class SleepComponent implements OnInit {
     this.sleepQuality = 0;
     this.id = "";
     this.hasLog = false;
+    this.addingSleepLog = false
+    this.resetForm();
   }
 
   showSleepLogForm(date: Date) {
-    this.addingSleepLog = !this.addingSleepLog;
-    this.selectedDate = date;
-  }
+    this.resetForm()
+    console.log("here");
 
+    this.selectedDate = date;
+    this.addingSleepLog = true;
+  }
+  resetForm() {
+    this.dreams = "";
+    this.startTime = 0;
+    this.endTime = 0;
+    this.sleepQuality = 0;
+    this.id = "";
+    this.hasLog = false;
+  }
   showSleepEditForm(selectedDate: Date) {
+    this.resetForm(); 
+
     this.selectedDate = selectedDate;
-    this.addingSleepLog = !this.addingSleepLog;
+    console.log("this selected date", this.selectedDate);
+    console.log("this.sleepData", this.sleepData);
 
     for (let day of this.sleepData) {
       const date = new Date(day.data.date.seconds * 1000);
@@ -132,12 +149,14 @@ export class SleepComponent implements OnInit {
         this.endTime = day.data.endTime;
         this.sleepQuality = day.data.sleepQuality;
         this.id = day.id;
+        this.addingSleepLog = true;
         return;
       }
       else {
         this.hasLog = false;
       }
     }
+    this.addingSleepLog = true;
   }
 
   loadLogsForWeek(): void {

@@ -56,7 +56,7 @@ export class LoginComponent {
       } else {
         this.afAuth.authState.subscribe((user) => {
           if (user) {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/trackers']);
           }
         });
       }

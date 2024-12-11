@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
-
+  constructor(private userService: UserService) {
+  }
+  user: null | String = null;
+  ngOnInit(): void {
+    this.userService.getCurrentUserId().subscribe((userId) => {
+      this.user = userId;
+    });
+  }
 }

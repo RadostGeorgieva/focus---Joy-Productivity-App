@@ -4,8 +4,12 @@
       <h1 class="headline-secondary">Crush Goals, Spark Joy, Repeat!</h1>
       <p class="tagline">Your ultimate tool for productivity, self-care, and success.</p>
       <div class="cta-buttons">
-        <a href="/register" class="btn-primary">Get Started</a>
-        <a href="/catalog" class="btn-secondary">Learn More</a>
+        @if (this.user) {
+          <a href="/trackers" class="btn-primary">Get Started</a>
+        } @else {
+          <a href="/register" class="btn-primary">Get Started</a>
+        }
+        <a href="/inspiration" class="btn-secondary">Learn More</a>
       </div>
     </div>
     <div class="hero-image">

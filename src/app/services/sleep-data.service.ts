@@ -37,7 +37,7 @@ export class SleepService {
       };
 
       try {
-        await this.firebaseService.addDocument('UsersData', uid, updatedItem, this.collectionName)
+        await this.firebaseService.addOrUpdateData('UsersData', uid, updatedItem, this.collectionName)
       } catch (err) {
         console.error("Error updating sleep data:", err);
       }
@@ -48,7 +48,7 @@ export class SleepService {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid){
-          this.firebaseService.addDocument("UsersData", uid, sleepData, this.collectionName)
+          this.firebaseService.addOrUpdateData("UsersData", uid, sleepData, this.collectionName)
         return;
         }
       },
@@ -60,7 +60,7 @@ export class SleepService {
     this.userService.getCurrentUserId().subscribe({
       next: (uid) => {
         if (uid)   {
-          this.firebaseService.addDocument("UsersData", uid, {date,hours}, this.collectionName)
+          this.firebaseService.addOrUpdateData("UsersData", uid, {date,hours}, this.collectionName)
           return;
         }    
          
